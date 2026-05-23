@@ -1,0 +1,2030 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>desgnerplug.de – Katalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!--
+═══════════════════════════════════════════════════════════════════
+  desgnerplug.de - BILDER MANUELL EINFÜGEN
+═══════════════════════════════════════════════════════════════════
+
+  LOGO einfügen:
+  - Lege deine Logo-Datei als "Logo.png" neben diese HTML
+  - Wird automatisch in Header, Login, Footer und Trust-Sektion geladen
+
+  PRODUKTBILDER einfügen:
+  - Im Admin-Modus: Drag&Drop ins Produkt-Modal (empfohlen)
+  - Alternativ unten im <script> bei "PRODUKTLISTE" das Feld "img" befüllen
+  - Beispiel: img: 'bilder/slim-fit-chino.jpg'
+
+  KATEGORIEN-VORSCHAUBILDER:
+  - Im Admin-Modus: auf jedem Slide den "+ Bild hinzufügen" Button nutzen
+
+  Bilder-Ordner: erstelle einen Ordner "bilder" neben dieser HTML
+═══════════════════════════════════════════════════════════════════
+-->
+
+<style>
+:root{
+  --bg-0:#050505;
+  --bg-1:#0C0C0C;
+  --bg-2:#141414;
+  --bg-3:#1C1C1C;
+  --bg-4:#222222;
+  --line:#2A2A2A;
+  --line-2:#383838;
+  --line-soft:rgba(255,255,255,0.06);
+  --white:#FFFFFF;
+  --off-white:#F5F5F5;
+  --text:#F5F5F5;
+  --text-mute:#A8A8A8;
+  --text-dim:#6E6E6E;
+  --green:#22C55E;
+  --green-2:#16A34A;
+  --green-soft:rgba(34,197,94,0.16);
+  --green-glow:rgba(34,197,94,0.45);
+  --red:#EF4444;
+  --red-soft:rgba(239,68,68,0.18);
+  --white-glow:rgba(255,255,255,0.12);
+  --shadow:0 14px 50px rgba(0,0,0,0.6);
+  --radius:14px;
+  --radius-sm:8px;
+  --radius-lg:22px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter','Helvetica Neue',Arial,sans-serif;
+  background:var(--bg-0);
+  color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:"ss01","cv11";
+  overflow-x:hidden;
+}
+/* Globaler Hintergrund-Glow */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(800px 500px at 50% 0%, rgba(255,255,255,0.04), transparent 60%),
+    radial-gradient(1000px 600px at 80% 40%, rgba(34,197,94,0.05), transparent 60%),
+    radial-gradient(600px 400px at 10% 80%, rgba(255,255,255,0.03), transparent 60%);
+}
+::selection{background:var(--white);color:var(--bg-0);}
+img{display:block;max-width:100%;}
+
+/* ════════ LOGIN ════════ */
+#login-screen{position:fixed;inset:0;background:var(--bg-0);display:flex;align-items:center;justify-content:center;z-index:9999;overflow:hidden;}
+#login-screen::before{content:'';position:absolute;inset:0;background:radial-gradient(600px 400px at 50% 50%, rgba(255,255,255,0.08), transparent 70%);}
+#login-screen::after{
+  content:'';position:absolute;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle, rgba(34,197,94,0.2) 0%, transparent 70%);
+  filter:blur(60px);
+  animation:float-glow 8s ease-in-out infinite;
+}
+@keyframes float-glow{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(40px,-30px) scale(1.1);}
+}
+.login-box{position:relative;background:rgba(20,20,20,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--line);padding:2.5rem 2rem;width:calc(100% - 2rem);max-width:400px;text-align:center;border-radius:var(--radius-lg);box-shadow:0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);z-index:2;}
+.login-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--white);letter-spacing:-0.02em;}
+.login-sub{font-size:11px;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;margin-top:4px;margin-bottom:1.75rem;font-weight:500;}
+.login-div{display:none;}
+.login-label{display:block;text-align:left;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mute);margin-bottom:8px;font-weight:600;}
+.login-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--line);color:var(--white);padding:14px 16px;font-family:'Inter',sans-serif;font-size:15px;outline:none;margin-bottom:20px;border-radius:var(--radius-sm);transition:border-color .2s, background .2s, box-shadow .2s;}
+.login-input:focus{border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.07);box-shadow:0 0 0 4px rgba(255,255,255,0.05);}
+.login-btn{
+  width:100%;background:var(--white);border:none;color:var(--bg-0);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;padding:15px;
+  cursor:pointer;border-radius:var(--radius-sm);
+  transition:transform .15s, box-shadow .25s;
+  box-shadow:0 8px 24px rgba(255,255,255,0.15);
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(255,255,255,0.22);}
+.login-error{color:#FF8888;font-size:12px;margin-top:12px;min-height:18px;}
+.login-hint{font-size:10px;color:var(--text-dim);margin-top:20px;letter-spacing:0.15em;text-transform:uppercase;}
+
+#app{display:none;min-height:100vh;background:var(--bg-0);position:relative;z-index:1;}
+
+/* ════════ ADMIN BAR ════════ */
+#admin-bar{display:none;background:var(--bg-1);border-bottom:1px solid var(--line);padding:8px 1.25rem;}
+.admin-bar-inner{max-width:1200px;margin:0 auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.admin-bar-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--green);margin-right:6px;font-weight:700;}
+.abar-btn{background:var(--bg-3);border:1px solid var(--line);color:var(--white);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;padding:7px 12px;cursor:pointer;border-radius:6px;transition:all .2s;}
+.abar-btn:hover{background:var(--bg-4);border-color:var(--line-2);}
+
+/* ════════ TOP TRUST PILLS ════════ */
+.top-pills{background:var(--bg-0);padding:1rem 1rem 0.5rem;display:flex;justify-content:center;position:relative;z-index:2;}
+.top-pills-inner{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:1100px;width:100%;}
+/* Variante: vor der Wunsch-CTA, mit mehr Luft drumherum */
+.cta-pills{padding:2rem 1rem 1rem;}
+.pill{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:9px 11px;
+  display:flex;align-items:center;gap:9px;
+  font-size:11px;line-height:1.25;
+  min-width:0;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.pill:hover{border-color:var(--line-2);background:var(--bg-3);box-shadow:inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 16px rgba(0,0,0,0.3);}
+.pill-icon{
+  width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(180deg, #2A2A2A 0%, #161616 100%);
+  color:var(--white);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:13px;font-weight:700;
+  border:1px solid var(--line-2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.pill-text{display:flex;flex-direction:column;min-width:0;}
+.pill-title{font-weight:700;color:var(--white);font-size:11.5px;letter-spacing:-0.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pill-sub{font-size:10px;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ════════ HEADER ════════ */
+header{
+  background:rgba(5,5,5,0.85);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:0.75rem 1rem 0.5rem;
+  position:sticky;top:0;z-index:100;
+  border-bottom:1px solid var(--line-soft);
+}
+.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:1rem;position:relative;}
+.header-left,.header-right{position:absolute;display:flex;align-items:center;gap:10px;top:50%;transform:translateY(-50%);}
+.header-left{left:0;}
+.header-right{right:0;}
+.header-logo{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;position:relative;}
+/* Glow-Ring um das Logo */
+.header-logo::before{
+  content:'';position:absolute;inset:-12px;
+  background:radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 40%, transparent 70%);
+  border-radius:50%;
+  filter:blur(8px);
+  z-index:-1;
+}
+.header-logo-slot{display:flex;align-items:center;justify-content:center;position:relative;}
+.header-logo-slot img{max-height:62px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 18px rgba(255,255,255,0.25)) drop-shadow(0 0 32px rgba(255,255,255,0.15));}
+.brand-name{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--white);letter-spacing:-0.02em;line-height:1;}
+.brand-road{display:none;}
+.icon-btn{
+  background:var(--bg-2);border:1px solid var(--line);
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);font-size:16px;cursor:pointer;
+  transition:background .2s, transform .15s, border-color .2s;
+}
+.icon-btn:hover{background:var(--bg-3);transform:translateY(-1px);border-color:var(--line-2);}
+.cart-btn{
+  background:var(--white);border:none;color:var(--bg-0);
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+  padding:0;cursor:pointer;
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;gap:0;
+  position:relative;
+  box-shadow:0 6px 20px rgba(255,255,255,0.18);
+  transition:transform .15s, box-shadow .25s;
+}
+.cart-btn span:first-child{display:none;}
+.cart-btn::before{content:'';width:18px;height:18px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z'/><line x1='3' x2='21' y1='6' y2='6'/><path d='M16 10a4 4 0 0 1-8 0'/></svg>") center/contain no-repeat;}
+.cart-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,255,255,0.28);}
+.cart-count{
+  position:absolute;top:-3px;right:-3px;
+  background:var(--green);color:var(--bg-0);
+  width:18px;height:18px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;border:2px solid var(--bg-0);
+  box-shadow:0 0 12px var(--green-glow);
+}
+.admin-badge{background:var(--white);color:var(--bg-0);font-size:9px;letter-spacing:0.15em;text-transform:uppercase;padding:5px 9px;border-radius:5px;font-weight:700;}
+.logout-btn{background:var(--bg-2);border:1px solid var(--line);color:var(--text-mute);font-size:10px;font-family:'Inter',sans-serif;font-weight:600;padding:7px 11px;cursor:pointer;letter-spacing:0.04em;text-transform:uppercase;border-radius:6px;transition:all .2s;}
+.logout-btn:hover{border-color:var(--line-2);color:var(--white);background:var(--bg-3);}
+
+/* ════════ NAV ════════ */
+nav{
+  display:flex;gap:0;justify-content:center;flex-wrap:wrap;
+  border-top:1px solid var(--line-soft);
+  margin:0.5rem -1rem 0;
+  padding:6px 1rem 0;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none;}
+.nav-btn{
+  background:none;border:none;color:var(--text-mute);
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:8px 14px;cursor:pointer;white-space:nowrap;
+  border-bottom:2px solid transparent;
+  transition:color .2s, border-color .2s;
+}
+.nav-btn:hover{color:var(--white);}
+.nav-btn.active{color:var(--white);border-bottom-color:var(--white);}
+
+/* ════════ HERO ════════ */
+.hero{
+  background:var(--bg-0);
+  padding:1rem 1rem 0;
+  text-align:center;
+  position:relative;
+}
+.hero-grid{display:block;}
+.hero-left,.hero-right{display:block;}
+.hero-eyebrow,.hero-divider,.hero-title,.hero-sub,.hero-cta{display:none;}
+.hero-logo-stage{margin:0 auto;max-width:520px;display:none;}
+.hero-annot{display:none;}
+
+/* ════════ MAIN ════════ */
+main{max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem;background:transparent;position:relative;z-index:2;}
+
+/* ════════ CATEGORY TABS ════════ */
+.cat-tabs{
+  display:flex;gap:6px;flex-wrap:wrap;
+  margin-bottom:1.5rem;padding-bottom:0;
+  border-bottom:none;justify-content:center;
+}
+.cat-tab{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+  color:var(--text-mute);
+  padding:8px 16px;cursor:pointer;
+  border-bottom:1px solid var(--line);
+  margin-bottom:0;
+  transition:all .2s;
+}
+.cat-tab:hover{background:var(--bg-3);color:var(--white);border-color:var(--line-2);}
+.cat-tab.active{background:var(--white);color:var(--bg-0);border-color:var(--white);box-shadow:0 0 24px rgba(255,255,255,0.2);}
+
+/* ════════ SECTION HEADER ════════ */
+.section-header{
+  display:flex;align-items:baseline;justify-content:flex-start;
+  margin-bottom:1rem;margin-top:1.5rem;
+  padding-bottom:0;border-bottom:none;
+  gap:0.75rem;
+}
+.section-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:22px;font-weight:800;
+  color:var(--white);letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+.section-count{font-size:10px;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;font-weight:600;}
+
+/* ════════ PRODUCT GRID ════════ */
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;margin-bottom:2rem;
+}
+.product-card{
+  background:var(--bg-2);
+  border:1px solid var(--line);
+  position:relative;
+  transition:transform .25s, box-shadow .3s, border-color .25s;
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.product-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+  border-color:var(--line-2);
+}
+.product-img{
+  width:100%;aspect-ratio:1/1;
+  background:var(--bg-3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.product-card:hover .product-img img{transform:scale(1.05);}
+.img-ph{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0.75rem;text-align:center;}
+.img-ph-icon{width:48px;height:48px;border:1px dashed var(--line-2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-dim);border-radius:8px;background:var(--bg-2);}
+.img-ph-name{font-size:10px;color:var(--text-mute);letter-spacing:0.04em;line-height:1.4;}
+.img-ph-filename{font-family:'Geist Mono',monospace;font-size:9px;color:var(--text-dim);background:var(--bg-1);padding:2px 6px;margin-top:4px;display:inline-block;border-radius:4px;}
+.admin-overlay{position:absolute;inset:0;background:rgba(5,5,5,0.88);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px;opacity:0;transition:opacity .25s;}
+.product-card:hover .admin-overlay{opacity:1;}
+.admin-edit-btn{background:var(--white);border:none;color:var(--bg-0);font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:9px 0;cursor:pointer;width:130px;text-align:center;border-radius:6px;}
+.admin-del-btn{background:transparent;border:1px solid #FF6666;color:#FF8888;font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:8px 0;cursor:pointer;width:130px;text-align:center;border-radius:6px;}
+.admin-del-btn:hover{background:var(--red-soft);}
+.product-info{padding:0.85rem 0.9rem 0.6rem;flex:1;display:flex;flex-direction:column;}
+.product-cat-tag{display:none;}
+.product-name{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px;line-height:1.25;letter-spacing:-0.01em;}
+.product-desc{font-size:11px;color:var(--text-mute);line-height:1.4;margin-bottom:0.75rem;}
+
+/* ════════ SIZE / COLOR PICKER ════════ */
+.picker-label{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.picker-label .req{color:#FF8888;font-weight:900;letter-spacing:0;}
+.picker-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.picker-opt{
+  background:var(--bg-3);border:1px solid var(--line);color:var(--text-mute);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:0.04em;text-transform:uppercase;
+  padding:5px 9px;cursor:pointer;border-radius:6px;min-width:30px;
+  transition:all .15s;
+}
+.picker-opt:hover{border-color:var(--white);color:var(--white);background:var(--bg-4);}
+.picker-opt.active{background:var(--white);border-color:var(--white);color:var(--bg-0);box-shadow:0 0 12px rgba(255,255,255,0.2);}
+.picker-hint{font-size:10px;color:#FF8888;font-weight:600;margin-bottom:8px;opacity:0;max-height:0;overflow:hidden;transition:opacity .2s, max-height .25s;}
+.picker-hint.show{opacity:1;max-height:24px;}
+
+.add-to-cart{
+  width:100%;background:var(--white);border:none;color:var(--bg-0);
+  font-family:'Inter',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:11px;cursor:pointer;
+  border-radius:8px;margin-top:auto;
+  transition:background .2s, transform .15s, box-shadow .25s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  box-shadow:0 4px 14px rgba(255,255,255,0.1);
+}
+.add-to-cart::before{content:'+';font-size:14px;font-weight:600;}
+.add-to-cart:hover{background:var(--off-white);transform:translateY(-1px);box-shadow:0 8px 22px rgba(255,255,255,0.18);}
+.add-to-cart.added{background:var(--green);color:var(--bg-0);box-shadow:0 4px 18px var(--green-glow);}
+.add-to-cart.added::before{content:'✓';font-weight:700;}
+.add-to-cart.added:hover{background:#2dd06b;}
+
+/* Cart-Item picker kleiner */
+.cart-item .picker-label{font-size:9px;margin-top:6px;margin-bottom:4px;}
+.cart-item .picker-row{margin-bottom:4px;gap:3px;}
+.cart-item .picker-opt{font-size:9px;padding:3px 7px;min-width:24px;}
+
+/* ════════ CART SIDEBAR ════════ */
+#cart-sidebar{position:fixed;right:-420px;top:0;bottom:0;width:400px;max-width:100%;background:var(--bg-1);border-left:1px solid var(--line);z-index:2000;display:flex;flex-direction:column;transition:right .4s cubic-bezier(0.4,0,0.2,1);box-shadow:-8px 0 60px rgba(0,0,0,0.7);}
+#cart-sidebar.open{right:0;}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);z-index:1999;}
+.cart-overlay.open{display:block;}
+.cart-header{background:var(--bg-0);padding:1.25rem 1.25rem 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);}
+.cart-header-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;color:var(--white);font-weight:700;letter-spacing:-0.01em;}
+.cart-close{background:var(--bg-3);border:1px solid var(--line);color:var(--white);width:34px;height:34px;border-radius:50%;font-size:18px;cursor:pointer;line-height:1;transition:background .2s;display:flex;align-items:center;justify-content:center;}
+.cart-close:hover{background:var(--bg-4);}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 1.25rem;}
+.cart-empty{text-align:center;color:var(--text-dim);padding:3rem 1rem;font-size:13px;}
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);}
+.cart-item-img{width:72px;height:72px;flex-shrink:0;background:var(--bg-3);object-fit:cover;display:block;border-radius:8px;}
+.cart-item-img-ph{width:72px;height:72px;flex-shrink:0;background:var(--bg-3);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--text-dim);border-radius:8px;border:1px solid var(--line);}
+.cart-item-info{flex:1;min-width:0;}
+.cart-item-name{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px;letter-spacing:-0.005em;}
+.cart-item-cat{font-size:9px;color:var(--text-dim);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+.cart-item-detail{font-size:11px;color:var(--text-mute);margin-bottom:2px;}
+.cart-item-remove{background:none;border:none;color:#FF8888;font-size:10px;cursor:pointer;padding:4px 0 0;font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+.cart-footer{padding:1.25rem;border-top:1px solid var(--line);background:var(--bg-0);}
+.cart-summary-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;font-weight:600;}
+.cart-count-big{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;color:var(--white);margin-bottom:14px;font-weight:700;}
+.whatsapp-btn{
+  width:100%;background:#25D366;border:none;color:white;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:800;
+  letter-spacing:0.04em;text-transform:uppercase;padding:16px;
+  cursor:pointer;border-radius:8px;
+  transition:transform .15s, box-shadow .25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 24px rgba(37,211,102,0.4);
+}
+.whatsapp-btn::before{content:'';width:18px;height:18px;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M17.498 14.382c-.301-.15-1.767-.867-2.04-.966-.273-.101-.473-.15-.673.15-.197.295-.771.964-.944 1.162-.175.195-.349.21-.646.075-.3-.15-1.263-.465-2.403-1.485-.888-.795-1.484-1.77-1.66-2.07-.174-.3-.019-.465.13-.615.136-.135.301-.345.451-.523.146-.181.194-.301.297-.496.1-.21.049-.375-.025-.524-.075-.15-.672-1.62-.922-2.206-.24-.584-.487-.51-.672-.51-.172-.015-.371-.015-.571-.015-.2 0-.523.074-.797.359-.273.3-1.045 1.02-1.045 2.475s1.07 2.865 1.219 3.075c.149.18 2.105 3.195 5.1 4.485.714.3 1.27.48 1.704.629.714.227 1.365.195 1.88.121.574-.091 1.767-.721 2.016-1.426.255-.705.255-1.29.18-1.425-.074-.135-.27-.21-.57-.345m-5.446 7.443h-.016c-1.77 0-3.524-.48-5.055-1.38l-.36-.214-3.75.975 1.005-3.645-.239-.375a9.869 9.869 0 0 1-1.516-5.26c0-5.445 4.455-9.885 9.942-9.885a9.865 9.865 0 0 1 7.022 2.91 9.788 9.788 0 0 1 2.892 6.99c-.004 5.444-4.46 9.885-9.935 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.334.101 11.893c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a12.062 12.062 0 0 0 5.71 1.447h.006c6.585 0 11.946-5.336 11.949-11.896 0-3.176-1.24-6.165-3.495-8.411'/></svg>") center/contain no-repeat;}
+.whatsapp-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(37,211,102,0.55);}
+.cart-note-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);display:block;margin:12px 0 6px;font-weight:600;}
+.cart-note-input{width:100%;background:var(--bg-2);border:1px solid var(--line);color:var(--white);font-family:'Inter',sans-serif;font-size:13px;padding:10px;outline:none;resize:none;min-height:56px;border-radius:6px;}
+.cart-note-input:focus{border-color:var(--line-2);}
+
+/* ════════ MODALS ════════ */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);z-index:5000;align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--bg-1);border:1px solid var(--line);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:1.75rem;border-radius:var(--radius-lg);box-shadow:var(--shadow);}
+.modal-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--line);letter-spacing:-0.02em;}
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-mute);margin-bottom:6px;font-weight:700;}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg-2);border:1px solid var(--line);color:var(--white);font-family:'Inter',sans-serif;font-size:14px;padding:11px 13px;outline:none;border-radius:8px;transition:border-color .2s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--line-2);}
+.form-textarea{min-height:78px;resize:vertical;}
+.modal-actions{display:flex;gap:10px;margin-top:1.5rem;}
+.btn-primary{flex:1;background:var(--white);border:none;color:var(--bg-0);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:13px;cursor:pointer;border-radius:8px;transition:background .2s, transform .15s;box-shadow:0 4px 14px rgba(255,255,255,0.12);}
+.btn-primary:hover{background:var(--off-white);transform:translateY(-1px);}
+.btn-secondary{background:var(--bg-2);border:1px solid var(--line);color:var(--text-mute);font-family:'Inter',sans-serif;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;padding:13px 18px;cursor:pointer;border-radius:8px;font-weight:600;transition:all .2s;}
+.btn-secondary:hover{border-color:var(--line-2);color:var(--white);background:var(--bg-3);}
+.tags-input{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tag-item{background:var(--bg-3);border:1px solid var(--line);font-size:12px;color:var(--white);padding:4px 10px;display:flex;align-items:center;gap:6px;border-radius:5px;font-weight:600;}
+.tag-remove{cursor:pointer;color:var(--text-dim);font-size:14px;}
+.cat-chip{background:var(--bg-3);border:1px solid var(--line);padding:6px 12px;font-size:13px;color:var(--white);display:flex;align-items:center;gap:8px;border-radius:6px;font-weight:600;}
+.chip-del{cursor:pointer;color:var(--text-dim);}
+.cat-manage-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+
+/* ════════ IMAGE UPLOAD ════════ */
+.img-drop{
+  position:relative;background:var(--bg-2);
+  border:2px dashed var(--line-2);border-radius:12px;
+  padding:1.25rem;text-align:center;cursor:pointer;
+  transition:border-color .2s, background .2s;
+  min-height:150px;display:flex;align-items:center;justify-content:center;
+}
+.img-drop:hover{border-color:var(--white);background:var(--bg-3);}
+.img-drop.drag{border-color:var(--green);background:var(--green-soft);border-style:solid;box-shadow:0 0 30px var(--green-glow);}
+.img-drop-empty{display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;}
+.img-drop-icon{width:42px;height:42px;border-radius:50%;background:var(--white);color:var(--bg-0);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;margin-bottom:4px;box-shadow:0 4px 14px rgba(255,255,255,0.18);}
+.img-drop-text{font-size:13px;color:var(--white);font-weight:700;}
+.img-drop-hint{font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;font-weight:600;}
+.img-drop-preview{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.img-drop-preview img{max-width:100%;max-height:220px;display:block;border-radius:6px;border:1px solid var(--line);}
+.img-drop-clear{background:transparent;border:1px solid #FF8888;color:#FF8888;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;cursor:pointer;border-radius:6px;transition:background .2s;}
+.img-drop-clear:hover{background:var(--red-soft);}
+
+/* ════════ CATEGORY SLIDESHOW ════════ */
+.cat-slideshow-section{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 0;position:relative;z-index:2;}
+.cat-slideshow-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin-bottom:0.75rem;letter-spacing:-0.02em;text-transform:uppercase;}
+.cat-slideshow{position:relative;overflow:hidden;border-radius:var(--radius);background:var(--bg-2);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);}
+.cat-slides{display:flex;transition:transform .6s cubic-bezier(0.4,0,0.2,1);}
+.cat-slide{min-width:100%;aspect-ratio:16/9;position:relative;background:var(--bg-3);display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;}
+.cat-slide img{width:100%;height:100%;object-fit:cover;transition:transform 1s ease;}
+.cat-slide:hover img{transform:scale(1.04);}
+.cat-slide-ph{display:flex;flex-direction:column;align-items:center;gap:10px;padding:2rem;text-align:center;}
+.cat-slide-ph-icon{width:60px;height:60px;border:2px dashed var(--line-2);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text-dim);border-radius:50%;background:var(--bg-2);}
+.cat-slide-ph-name{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;color:var(--white);font-weight:700;}
+.cat-slide-ph-file{font-family:'Geist Mono',monospace;font-size:10px;color:var(--text-dim);background:var(--bg-1);padding:3px 8px;border-radius:4px;}
+.cat-slide-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.2) 60%,transparent 100%);display:flex;align-items:flex-end;padding:1.5rem;pointer-events:none;}
+.cat-slide-label{font-family:'Bricolage Grotesque',sans-serif;font-size:28px;font-weight:800;color:var(--white);letter-spacing:-0.01em;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,0.6);}
+.cat-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);background:var(--bg-1);border:1px solid var(--line);color:var(--white);width:38px;height:38px;font-size:18px;cursor:pointer;z-index:5;transition:all .2s;display:flex;align-items:center;justify-content:center;border-radius:50%;box-shadow:0 4px 14px rgba(0,0,0,0.5);}
+.cat-slide-arrow:hover{background:var(--white);color:var(--bg-0);border-color:var(--white);}
+.cat-slide-arrow.prev{left:12px;}
+.cat-slide-arrow.next{right:12px;}
+.cat-slide-dots{display:flex;justify-content:center;gap:6px;margin-top:10px;}
+.cat-slide-dot{width:6px;height:6px;border-radius:50%;background:var(--line-2);border:none;cursor:pointer;transition:all .25s;}
+.cat-slide-dot.active{background:var(--white);width:22px;border-radius:3px;box-shadow:0 0 10px rgba(255,255,255,0.4);}
+
+/* Admin-Edit-Overlay auf jedem Slide */
+.cat-slide-admin{
+  position:absolute;top:14px;right:14px;
+  display:none;z-index:8;gap:8px;
+}
+.cat-slide.is-admin .cat-slide-admin{display:flex;}
+.cat-slide-admin-btn{
+  background:rgba(5,5,5,0.85);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.25);
+  color:var(--white);
+  font-family:'Inter',sans-serif;
+  font-size:10px;font-weight:800;
+  letter-spacing:0.12em;text-transform:uppercase;
+  padding:9px 14px;cursor:pointer;
+  border-radius:8px;
+  transition:background .2s, transform .15s, box-shadow .25s, border-color .2s;
+}
+.cat-slide-admin-btn:hover{
+  background:var(--white);color:var(--bg-0);
+  border-color:var(--white);
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px rgba(255,255,255,0.25);
+}
+.cat-slide-admin-btn.danger{
+  border-color:rgba(255,136,136,0.55);
+  color:#FF8888;
+}
+.cat-slide-admin-btn.danger:hover{
+  background:rgba(239,68,68,0.18);
+  color:#FFB0B0;
+  border-color:#FF8888;
+  box-shadow:0 8px 22px rgba(239,68,68,0.25);
+}
+
+/* ════════ ICONIC BRANDS ════════ */
+.brands-section{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 0.5rem;position:relative;z-index:2;}
+.brands-title{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--white);margin-bottom:0.25rem;letter-spacing:-0.01em;text-align:center;text-transform:uppercase;}
+.brands-subtitle{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);text-align:center;margin-bottom:1rem;font-weight:600;}
+.brands-marquee{position:relative;overflow:hidden;background:transparent;padding:0.5rem 0;}
+.brands-marquee::before,.brands-marquee::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;}
+.brands-marquee::before{left:0;background:linear-gradient(to right,var(--bg-0),transparent);}
+.brands-marquee::after{right:0;background:linear-gradient(to left,var(--bg-0),transparent);}
+.brands-track{display:flex;gap:2.5rem;animation:scroll-brands 32s linear infinite;width:max-content;align-items:center;}
+.brands-marquee:hover .brands-track{animation-play-state:paused;}
+@keyframes scroll-brands{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.brand-item{display:flex;align-items:center;justify-content:center;height:50px;min-width:90px;flex-shrink:0;}
+.brand-item img{max-height:42px;max-width:120px;object-fit:contain;filter:grayscale(100%) brightness(2);opacity:0.7;transition:opacity .3s, filter .3s, transform .3s;}
+.brand-item:hover img{opacity:1;filter:grayscale(0%) brightness(1);transform:scale(1.06);}
+.brand-ph{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:700;color:var(--text-mute);letter-spacing:-0.005em;padding:8px 16px;background:var(--bg-2);border-radius:6px;border:1px solid var(--line);}
+
+/* ════════ TRUST / VERGLEICH ════════ */
+.trust-section{background:var(--bg-0);padding:2.5rem 1rem;margin-top:2rem;border-top:1px solid var(--line-soft);position:relative;z-index:2;}
+.trust-section::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(800px 400px at 50% 0%, rgba(255,255,255,0.04), transparent 60%);
+  pointer-events:none;
+}
+.trust-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2;}
+.trust-header{text-align:center;margin-bottom:1.75rem;}
+.trust-mainlogo{display:flex;justify-content:center;align-items:center;margin-bottom:0.75rem;position:relative;}
+.trust-mainlogo::before{
+  content:'';position:absolute;width:120px;height:120px;
+  background:radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%);
+  filter:blur(10px);
+}
+.trust-mainlogo img{height:64px;width:auto;position:relative;z-index:2;filter:drop-shadow(0 4px 18px rgba(255,255,255,0.25));}
+.trust-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-0.02em;text-transform:uppercase;}
+.trust-title em{font-style:normal;}
+.trust-subtitle{font-size:11px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-top:6px;font-weight:600;}
+
+.trust-compare{
+  display:block;background:var(--bg-1);
+  border:1px solid var(--line);border-radius:var(--radius-lg);
+  margin-bottom:2rem;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.trust-cmp-row{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr;
+  padding:14px 18px;border-bottom:1px solid var(--line);
+  align-items:center;font-size:13px;
+}
+.trust-cmp-row:last-child{border-bottom:none;}
+.trust-cmp-row.head{
+  background:var(--bg-2);padding:14px 18px;font-weight:800;
+  text-transform:uppercase;letter-spacing:0.08em;font-size:11px;
+}
+.trust-cmp-row.head .trust-cmp-col{text-align:center;}
+.trust-cmp-row.head .trust-cmp-col:first-child{text-align:left;}
+.trust-cmp-row.head .trust-cmp-store{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  color:var(--white);
+}
+.trust-cmp-row.head .trust-cmp-others{color:var(--text-dim);}
+.trust-cmp-col{display:flex;align-items:center;justify-content:center;}
+.trust-cmp-col:first-child{justify-content:flex-start;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.04em;font-size:12px;}
+.cmp-check{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--green-soft);color:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;border:1.5px solid var(--green);font-size:12px;
+  box-shadow:0 0 14px var(--green-glow);
+}
+.cmp-x{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--red-soft);color:#FF8888;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;border:1.5px solid #FF8888;font-size:12px;
+}
+
+.trust-col,.trust-row,.trust-col-header,.trust-col-icon,.trust-col-name,.trust-check,.trust-row-text{display:none;}
+
+/* ════════ FEATURES ════════ */
+.trust-features{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:1.5rem;}
+.trust-feat{background:var(--bg-2);border:1px solid var(--line);padding:1.25rem 0.75rem;text-align:center;border-radius:var(--radius);transition:transform .2s, border-color .2s, box-shadow .25s;box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);}
+.trust-feat:hover{transform:translateY(-3px);border-color:var(--line-2);box-shadow:0 12px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);}
+.trust-feat-icon{font-size:26px;margin-bottom:6px;}
+.trust-feat-title{font-family:'Inter',sans-serif;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--white);font-weight:800;margin-bottom:4px;}
+.trust-feat-text{font-size:11px;color:var(--text-mute);line-height:1.5;}
+
+/* ════════ WUNSCH-CTA BAR ════════ */
+.wish-cta{
+  background:var(--bg-1);
+  color:var(--white);
+  padding:2rem 1rem;text-align:center;
+  margin-top:2rem;
+  position:relative;overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+.wish-cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(600px 200px at 50% 50%, rgba(255,255,255,0.08), transparent 70%);
+}
+.wish-cta-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2;}
+.wish-cta-eyebrow{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-bottom:0.5rem;}
+.wish-cta-title{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(20px,3.5vw,32px);font-weight:800;letter-spacing:-0.02em;margin-bottom:1rem;line-height:1.15;color:var(--white);}
+.wish-cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--white);color:var(--bg-0);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:800;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:14px 24px;border:none;cursor:pointer;border-radius:10px;
+  transition:transform .15s, box-shadow .25s;
+  box-shadow:0 8px 24px rgba(255,255,255,0.18);
+}
+.wish-cta-btn::after{content:'→';font-size:16px;}
+.wish-cta-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(255,255,255,0.28);}
+
+/* ════════ FAQ ════════ */
+.faq-section{background:var(--bg-0);padding:2.5rem 1rem;position:relative;z-index:2;}
+.faq-inner{max-width:760px;margin:0 auto;}
+.faq-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;color:var(--white);letter-spacing:-0.02em;text-align:center;margin-bottom:1.5rem;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;}
+.faq-list{display:flex;flex-direction:column;gap:8px;}
+.faq-item{
+  background:var(--bg-2);border:1px solid var(--line);
+  border-radius:999px;padding:0;
+  overflow:hidden;transition:border-radius .25s, border-color .2s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.faq-item:hover{border-color:var(--line-2);}
+.faq-item.open{border-radius:18px;background:var(--bg-2);border-color:var(--line-2);}
+.faq-q{
+  width:100%;background:none;border:none;color:var(--white);
+  padding:14px 22px;text-align:left;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.faq-q::after{content:'→';font-size:16px;transition:transform .25s;display:inline-block;color:var(--text-mute);}
+.faq-item.open .faq-q::after{transform:rotate(90deg);color:var(--white);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s;padding:0 22px;font-size:13px;line-height:1.6;color:var(--text-mute);}
+.faq-item.open .faq-a{max-height:300px;padding:0 22px 16px;}
+
+/* ════════ STATS ════════ */
+.stats-section{background:var(--bg-0);padding:0.5rem 1rem 2rem;position:relative;z-index:2;}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;display:flex;align-items:center;gap:12px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+  transition:border-color .2s, transform .15s;
+}
+.stat:hover{border-color:var(--line-2);transform:translateY(-2px);}
+.stat-icon{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--white);color:var(--bg-0);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(255,255,255,0.15);
+}
+.stat-text{display:flex;flex-direction:column;min-width:0;}
+.stat-num{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:var(--white);letter-spacing:-0.01em;line-height:1;}
+.stat-label{font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin-top:3px;}
+
+/* ════════ FOOTER ════════ */
+footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1rem 2rem;text-align:center;position:relative;z-index:2;}
+.footer-logo-slot{position:relative;display:flex;justify-content:center;align-items:center;margin-bottom:0.75rem;}
+.footer-logo-slot::before{
+  content:'';position:absolute;width:80px;height:80px;
+  background:radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  filter:blur(8px);
+}
+.footer-logo-slot img{height:48px;width:auto;position:relative;z-index:2;filter:drop-shadow(0 4px 14px rgba(255,255,255,0.2));}
+.footer-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;color:var(--white);margin-bottom:6px;font-weight:800;letter-spacing:-0.01em;}
+.footer-note{font-size:10px;color:var(--text-dim);letter-spacing:0.15em;text-transform:uppercase;font-weight:600;}
+.footer-socials{display:flex;justify-content:center;gap:12px;margin-top:14px;}
+.footer-social{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--bg-2);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--white);font-size:11px;font-weight:700;
+  cursor:pointer;text-decoration:none;
+  transition:transform .2s, box-shadow .25s, background .25s, border-color .2s;
+  position:relative;overflow:hidden;
+}
+.footer-social svg{width:18px;height:18px;position:relative;z-index:2;}
+.footer-social:hover{transform:translateY(-2px);border-color:transparent;}
+
+/* Instagram: weißes Icon + Gradient-Hintergrund beim Hover */
+.footer-social.ig::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(45deg, #F58529 0%, #DD2A7B 35%, #8134AF 65%, #515BD4 100%);
+  opacity:0;transition:opacity .25s;
+}
+.footer-social.ig:hover::before{opacity:1;}
+.footer-social.ig:hover{box-shadow:0 8px 22px rgba(221,42,123,0.45);}
+
+/* TikTok: weiß beim Hover, schwarzes Icon */
+.footer-social.tt:hover{background:var(--white);box-shadow:0 8px 22px rgba(255,255,255,0.22);}
+.footer-social.tt:hover svg{color:var(--bg-0);}
+
+.no-products{text-align:center;padding:4rem 1rem;color:var(--text-dim);grid-column:1/-1;font-size:13px;}
+
+/* ════════ MOBILE ════════ */
+@media(max-width:768px){
+  .top-pills-inner{grid-template-columns:repeat(3,1fr);gap:6px;}
+  .pill{padding:8px;gap:7px;}
+  .pill-icon{width:24px;height:24px;font-size:12px;}
+  .pill-title{font-size:10.5px;}
+  .pill-sub{font-size:9px;}
+  .header-inner{padding:0;}
+  .brand-name{font-size:15px;}
+  .header-logo-slot img{max-height:52px;}
+  main{padding:0.5rem 1rem 3rem;}
+  .product-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  #cart-sidebar{width:100%;right:-100%;}
+  .cat-slide{aspect-ratio:4/5;}
+  .cat-slide-label{font-size:20px;}
+  .trust-features{grid-template-columns:repeat(2,1fr);}
+  .stats-inner{grid-template-columns:1fr;}
+  .trust-cmp-row{grid-template-columns:1.2fr 0.9fr 0.9fr;padding:11px 14px;font-size:12px;}
+  .trust-cmp-row.head{font-size:10px;padding:11px 14px;}
+  .trust-cmp-col:first-child{font-size:11px;}
+  .icon-btn{width:34px;height:34px;font-size:14px;}
+  .cart-btn{width:34px;height:34px;}
+  .logout-btn{padding:6px 9px;font-size:9px;}
+}
+@media(max-width:480px){
+  .product-grid{grid-template-columns:repeat(2,1fr);}
+  .section-title{font-size:18px;}
+  .trust-title{font-size:18px;}
+  .faq-title{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+
+    <div class="login-logo-slot"><img src="logo.png" style="width:140px;display:block;margin:0 auto 1.25rem"></div>
+
+    <div class="login-brand">desgnerplug.de</div>
+    <div class="login-sub">Exklusiver Katalog</div>
+    <label class="login-label">Zugangs-Code</label>
+    <input type="password" class="login-input" id="pw-input" placeholder="Passwort eingeben" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">Eintreten</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-hint">Kunden- & Admin-Zugang</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+
+  <div id="admin-bar">
+    <div class="admin-bar-inner">
+      <span class="admin-bar-label">Admin</span>
+      <button class="abar-btn" onclick="openAddProduct()">+ Artikel</button>
+      <button class="abar-btn" onclick="openCatManager()">Kategorien</button>
+      <button class="abar-btn" onclick="openPwChange()">Passwoerter</button>
+      <button class="abar-btn" onclick="openSettings()">WhatsApp-Nr</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-inner">
+      <div class="header-left">
+        <span id="admin-badge" class="admin-badge" style="display:none">Admin</span>
+      </div>
+      <div class="header-logo" onclick="setCategory('Alle');window.scrollTo({top:0,behavior:'smooth'})">
+        <div class="header-logo-slot"><img src="logo.png" alt="desgnerplug.de"></div>
+      </div>
+      <div class="header-right">
+        <button class="cart-btn" onclick="toggleCart()" aria-label="Warenkorb">
+          <span>Warenkorb</span>
+          <span class="cart-count" id="cart-count-badge">0</span>
+        </button>
+        <button class="logout-btn" onclick="doLogout()">Abmelden</button>
+      </div>
+    </div>
+    <nav id="main-nav"></nav>
+  </header>
+
+  <!-- ═══════════ HERO (komplett verschlankt — Trust-Pills uebernehmen den Hero-Job) ═══════════ -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div class="hero-logo-stage">
+        <!-- Slot bleibt fuer Konsistenz, kann auch leer bleiben -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ CATEGORY SLIDESHOW ═══════════ -->
+  <div class="cat-slideshow-section">
+    <h2 class="cat-slideshow-title">Unsere Kategorien</h2>
+    <div class="cat-slideshow">
+      <button class="cat-slide-arrow prev" onclick="catSlide(-1)" aria-label="Vorherige">‹</button>
+      <button class="cat-slide-arrow next" onclick="catSlide(1)" aria-label="Naechste">›</button>
+      <div class="cat-slides" id="cat-slides"></div>
+    </div>
+    <div class="cat-slide-dots" id="cat-slide-dots"></div>
+  </div>
+
+  <!-- ═══════════ ICONIC BRANDS ═══════════ -->
+  <div class="brands-section">
+    <h2 class="brands-title">Iconic Brands</h2>
+    <div class="brands-subtitle">Die beliebtesten Marken im Shop</div>
+    <div class="brands-marquee">
+      <div class="brands-track" id="brands-track">
+        <div class="brand-item"><div class="brand-ph">Brand 1</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 2</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 3</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 4</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 5</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 6</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 7</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 8</div></div>
+        <!-- Duplikat fuer nahtlose Schleife -->
+        <div class="brand-item"><div class="brand-ph">Brand 1</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 2</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 3</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 4</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 5</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 6</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 7</div></div>
+        <div class="brand-item"><div class="brand-ph">Brand 8</div></div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <div id="products-container"></div>
+  </main>
+
+  <!-- ═══════════ TRUST PILLS (vor Wunsch-CTA) ═══════════ -->
+  <div class="top-pills cta-pills">
+    <div class="top-pills-inner">
+      <div class="pill">
+        <div class="pill-icon">⚡</div>
+        <div class="pill-text">
+          <div class="pill-title">Schneller Versand</div>
+          <div class="pill-sub">1-3 Werktage in DE</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">✦</div>
+        <div class="pill-text">
+          <div class="pill-title">Premium Qualität</div>
+          <div class="pill-sub">Geprüfte Ware</div>
+        </div>
+      </div>
+      <div class="pill">
+        <div class="pill-icon">✓</div>
+        <div class="pill-text">
+          <div class="pill-title">Auf Lager</div>
+          <div class="pill-sub">Direkt verfügbar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ WUNSCH-CTA ═══════════ -->
+  <div class="wish-cta">
+    <div class="wish-cta-inner">
+      <div class="wish-cta-eyebrow">Wir beschaffen dir alles an Produkten</div>
+      <div class="wish-cta-title">Wunschprodukt nicht im Shop?<br>Wir koennen's trotzdem besorgen.</div>
+      <button class="wish-cta-btn" onclick="toggleCart()">Anfrage starten</button>
+    </div>
+  </div>
+
+  <!-- ═══════════ FAQ ═══════════ -->
+  <div class="faq-section">
+    <div class="faq-inner">
+      <h2 class="faq-title">DESGNERPLUG INFOS &amp; HAEUFIG GESTELLTE FRAGEN <span>💬</span></h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.parentNode.classList.toggle('open')">Wie kann man uns kontaktieren?</button>
+          <div class="faq-a">Am schnellsten erreichst du uns direkt ueber WhatsApp – einfach Artikel auswaehlen, Warenkorb oeffnen und auf "Anfrage via WhatsApp" tippen. Wir antworten persoenlich und schnell.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.parentNode.classList.toggle('open')">Wie lange betraegt die Lieferzeit?</button>
+          <div class="faq-a">In Deutschland in der Regel 1–3 Werktage nach Bestaetigung. Bei Sonderbeschaffungen geben wir dir eine konkrete Lieferzeit nach der WhatsApp-Anfrage.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.parentNode.classList.toggle('open')">Sind die Produkte original?</button>
+          <div class="faq-a">Ja. Jedes Stueck wird vor dem Versand persoenlich geprueft. Authentizitaet und Qualitaet sind bei uns Standard, nicht Bonus.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.parentNode.classList.toggle('open')">Wie laeuft die Zahlung?</button>
+          <div class="faq-a">Die Zahlungsdetails klaeren wir individuell ueber WhatsApp – sicher, transparent und an deine Wuensche angepasst.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ STATS ═══════════ -->
+  <div class="stats-section">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-icon">📦</div>
+        <div class="stat-text"><div class="stat-num">2.000+</div><div class="stat-label">Bestellt</div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">🚚</div>
+        <div class="stat-text"><div class="stat-num">1.900+</div><div class="stat-label">Versandfertig</div></div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">✅</div>
+        <div class="stat-text"><div class="stat-num">1.850+</div><div class="stat-label">Zugestellt</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ VERGLEICH (Original Store vs Others) ═══════════ -->
+  <div class="trust-section">
+    <div class="trust-inner">
+      <div class="trust-header">
+        <div class="trust-mainlogo"><img src="logo.png" alt="desgnerplug.de"></div>
+        <h2 class="trust-title">Luxury Lifestyle &middot; Premium Produkte</h2>
+        <div class="trust-subtitle">Vergleich &middot; Qualitaet &middot; Vertrauen</div>
+      </div>
+
+      <div class="trust-compare">
+        <div class="trust-cmp-row head">
+          <div class="trust-cmp-col"></div>
+          <div class="trust-cmp-col"><div class="trust-cmp-store">⬢ DESGNERPLUG</div></div>
+          <div class="trust-cmp-col"><div class="trust-cmp-others">OTHER SELLERS</div></div>
+        </div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Trust</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Good Prices</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Quality Check</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Customer Service</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Product Range</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Safe Shipping</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Reviews</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+        <div class="trust-cmp-row"><div class="trust-cmp-col">Availability</div><div class="trust-cmp-col"><span class="cmp-check">✓</span></div><div class="trust-cmp-col"><span class="cmp-x">✕</span></div></div>
+      </div>
+
+      <div class="trust-features">
+        <div class="trust-feat">
+          <div class="trust-feat-icon">⚡</div>
+          <div class="trust-feat-title">Schnell</div>
+          <div class="trust-feat-text">Schnelle Antwort &amp; Lieferung</div>
+        </div>
+        <div class="trust-feat">
+          <div class="trust-feat-icon">🛡</div>
+          <div class="trust-feat-title">Sicher</div>
+          <div class="trust-feat-text">100% sicher &amp; diskret</div>
+        </div>
+        <div class="trust-feat">
+          <div class="trust-feat-icon">💎</div>
+          <div class="trust-feat-title">Premium</div>
+          <div class="trust-feat-text">Geprueft &amp; Top-Qualitaet</div>
+        </div>
+        <div class="trust-feat">
+          <div class="trust-feat-icon">💬</div>
+          <div class="trust-feat-title">Service</div>
+          <div class="trust-feat-text">Persoenlich via WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo-slot"><img src="logo.png" alt="desgnerplug.de" style="display:block;margin:0 auto 14px"></div>
+    <div class="footer-brand">desgnerplug.de</div>
+    <div class="footer-note">Anfragen nur ueber WhatsApp &middot; Kein Onlineverkauf</div>
+    <div class="footer-socials">
+      <!-- ░░ ANPASSEN: Instagram-Username zwischen instagram.com/ und " einfuegen ░░ -->
+      <a class="footer-social ig" href="https://instagram.com/desgnerplug.de" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </a>
+      <!-- ░░ ANPASSEN: TikTok-Username zwischen tiktok.com/@ und " einfuegen ░░ -->
+      <a class="footer-social tt" href="https://tiktok.com/@desgnerplug.de" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.81 20.6a6.34 6.34 0 0 0 10.86-4.43V8.86a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.85-.29z"></path>
+        </svg>
+      </a>
+    </div>
+  </footer>
+</div>
+
+
+<!-- CART -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div id="cart-sidebar">
+  <div class="cart-header">
+    <div class="cart-header-title">Ihre Auswahl</div>
+    <button class="cart-close" onclick="toggleCart()">x</button>
+  </div>
+  <div class="cart-items" id="cart-items-list"></div>
+  <div class="cart-footer">
+    <div class="cart-summary-label">Ausgewaehlte Artikel</div>
+    <div class="cart-count-big" id="cart-summary-text">0 Artikel</div>
+    <label class="cart-note-label">Ihre Nachricht (optional)</label>
+    <textarea class="cart-note-input" id="cart-note" placeholder="z.B. Groesse, Farbe, Fragen..."></textarea>
+    <button class="whatsapp-btn" onclick="sendToWhatsApp()" style="margin-top:12px">Anfrage via WhatsApp</button>
+  </div>
+</div>
+
+<!-- MODAL PRODUKT -->
+<div class="modal-bg" id="product-modal">
+  <div class="modal">
+    <div class="modal-title" id="product-modal-title">Artikel hinzufuegen</div>
+    <div class="form-group"><label class="form-label">Kategorie</label><select class="form-select" id="pm-cat"></select></div>
+    <div class="form-group"><label class="form-label">Artikelname</label><input class="form-input" id="pm-name"></div>
+    <div class="form-group"><label class="form-label">Beschreibung</label><textarea class="form-textarea" id="pm-desc"></textarea></div>
+    <div class="form-group">
+      <label class="form-label">Bild</label>
+      <div class="img-drop" id="pm-img-drop"
+           onclick="document.getElementById('pm-img-file').click()"
+           ondragover="event.preventDefault();this.classList.add('drag');"
+           ondragleave="this.classList.remove('drag');"
+           ondrop="handleImgDrop(event)">
+        <div class="img-drop-empty" id="pm-img-empty">
+          <div class="img-drop-icon">⬆</div>
+          <div class="img-drop-text">Bild hierher ziehen oder klicken</div>
+          <div class="img-drop-hint">JPG, PNG, WEBP &middot; auch per Strg+V einfügen</div>
+        </div>
+        <div class="img-drop-preview" id="pm-img-preview" style="display:none">
+          <img id="pm-img-preview-img" alt="">
+          <button type="button" class="img-drop-clear" onclick="event.stopPropagation();clearProductImg()">Bild entfernen</button>
+        </div>
+        <input type="file" id="pm-img-file" accept="image/*" style="display:none" onchange="handleImgFile(this.files[0])">
+        <input type="hidden" id="pm-img">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Groessen (Enter bestaetigt)</label>
+      <div class="tags-input" id="pm-sizes-container"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Farben (Enter bestaetigt)</label>
+      <div class="tags-input" id="pm-colors-container"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('product-modal')">Abbrechen</button>
+      <button class="btn-primary" onclick="saveProduct()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL KATEGORIEN -->
+<div class="modal-bg" id="cat-modal">
+  <div class="modal">
+    <div class="modal-title">Kategorien verwalten</div>
+    <div class="form-group">
+      <label class="form-label">Neue Kategorie</label>
+      <div style="display:flex;gap:10px">
+        <input class="form-input" id="new-cat-input" style="flex:1">
+        <button class="btn-primary" style="padding:10px 18px;font-size:12px" onclick="addCategory()">+</button>
+      </div>
+    </div>
+    <div class="cat-manage-list" id="cat-manage-list"></div>
+    <div class="modal-actions" style="margin-top:1.5rem"><button class="btn-secondary" onclick="closeModal('cat-modal')">Schliessen</button></div>
+  </div>
+</div>
+
+<!-- MODAL SLIDE-VORSCHAUBILD (eigene Upload-Zone fuer "Unsere Kategorien") -->
+<div class="modal-bg" id="slide-img-modal">
+  <div class="modal">
+    <div class="modal-title">Vorschaubild bearbeiten</div>
+    <div style="font-size:12px;color:var(--text-mute);margin-bottom:1rem;line-height:1.55">
+      Hier laedst du das grosse Vorschaubild fuer die "Unsere Kategorien"-Slideshow hoch. Das wirkt sich nicht auf die Produktkarten aus, sondern nur auf den grossen Slider oben.
+    </div>
+    <div class="form-group">
+      <label class="form-label" id="slide-img-cat-label">Kategorie</label>
+      <div class="img-drop" id="sm-img-drop"
+           onclick="document.getElementById('sm-img-file').click()"
+           ondragover="event.preventDefault();this.classList.add('drag');"
+           ondragleave="this.classList.remove('drag');"
+           ondrop="handleSlideImgDrop(event)">
+        <div class="img-drop-empty" id="sm-img-empty">
+          <div class="img-drop-icon">⬆</div>
+          <div class="img-drop-text">Bild hierher ziehen oder klicken</div>
+          <div class="img-drop-hint">JPG, PNG, WEBP &middot; auch per Strg+V einfuegen</div>
+        </div>
+        <div class="img-drop-preview" id="sm-img-preview" style="display:none">
+          <img id="sm-img-preview-img" alt="">
+          <button type="button" class="img-drop-clear" onclick="event.stopPropagation();clearSlideImgPreview()">Bild entfernen</button>
+        </div>
+        <input type="file" id="sm-img-file" accept="image/*" style="display:none" onchange="handleSlideImgFile(this.files[0])">
+        <input type="hidden" id="sm-img-data">
+        <input type="hidden" id="sm-img-cat">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('slide-img-modal')">Abbrechen</button>
+      <button class="btn-primary" onclick="saveSlideImg()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PASSWORT -->
+<div class="modal-bg" id="pw-modal">
+  <div class="modal">
+    <div class="modal-title">Passwoerter aendern</div>
+    <div class="form-group"><label class="form-label">Kunden-Passwort</label><input type="password" class="form-input" id="new-pw-customer"></div>
+    <div class="form-group"><label class="form-label">Admin-Passwort</label><input type="password" class="form-input" id="new-pw-admin"></div>
+    <div style="font-size:12px;color:var(--p4);margin-bottom:12px">Leer lassen = unveraendert</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('pw-modal')">Abbrechen</button>
+      <button class="btn-primary" onclick="savePw()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SETTINGS -->
+<div class="modal-bg" id="settings-modal">
+  <div class="modal">
+    <div class="modal-title">WhatsApp-Nummer</div>
+    <div class="form-group">
+      <label class="form-label">Nummer mit Laendervorwahl (ohne +)</label>
+      <input class="form-input" id="set-wa-num" placeholder="z.B. 4915100000000">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal('settings-modal')">Abbrechen</button>
+      <button class="btn-primary" onclick="saveSettings()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================================================================
+   PRODUKTLISTE - HIER BILDER EINTRAGEN
+   ===================================================================
+   Trage bei "img" den Pfad zu deinem Bild ein, z.B.:
+   img: 'bilder/slim-fit-chino.jpg'
+   Bleibt img: null, wird ein Platzhalter mit Dateinamen-Vorschlag angezeigt.
+   =================================================================== */
+
+var state = {
+  passwordCustomer: 'kunde123',
+  passwordAdmin:    'admin999',
+  whatsappNumber:   '4915100000000',
+  isAdmin: false,
+  isLoggedIn: false,
+  categories: ['Hosen','Hemden','T-Shirts','Jacken','Accessoires'],
+  products: [
+    { id:1, name:'Slim Fit Chino',      category:'Hosen',    desc:'Moderner Schnitt, leichtes Baumwollgewebe.', sizes:['S','M','L','XL','XXL'], colors:['Beige','Schwarz','Navy'],  img: null },
+    { id:2, name:'Linen Shirt Premium', category:'Hemden',   desc:'100% Leinen, luftig und angenehm.',          sizes:['S','M','L','XL'],       colors:['Weiss','Hellblau','Sand'], img: null },
+    { id:3, name:'Oversized Tee',       category:'T-Shirts', desc:'Weicher Jersey-Stoff, entspannter Fit.',     sizes:['S','M','L','XL','2XL'], colors:['Schwarz','Weiss','Grau'],  img: null },
+    { id:4, name:'Cargo Hose Relaxed',  category:'Hosen',    desc:'Viele Taschen, robustes Material.',          sizes:['S','M','L','XL'],       colors:['Khaki','Schwarz','Olive'], img: null },
+    { id:5, name:'Bomber Jacke',        category:'Jacken',   desc:'Klassische Silhouette mit modernem Touch.',  sizes:['S','M','L','XL'],       colors:['Schwarz','Olive'],         img: null },
+    { id:6, name:'Polo Shirt',          category:'T-Shirts', desc:'Strukturiertes Pique-Gewebe, elegant.',      sizes:['S','M','L','XL','XXL'], colors:['Navy','Weiss','Bordeaux'], img: null },
+    { id:7, name:'Jogger Pants',        category:'Hosen',    desc:'Weiche Fleece-Qualitaet, maximaler Komfort.',sizes:['S','M','L','XL'],       colors:['Grau','Schwarz'],          img: null },
+    { id:8, name:'Oxford Hemd',         category:'Hemden',   desc:'Klassisches Oxford-Gewebe, zeitlos elegant.',sizes:['S','M','L','XL','XXL'], colors:['Weiss','Hellblau'],        img: null }
+  ],
+  cart: [],
+  selections: {},
+  categoryImages: {},
+  nextId: 100,
+  activeCategory: 'Alle',
+  editingId: null,
+  editSizes: [],
+  editColors: []
+};
+
+function init() {
+  var saved = localStorage.getItem('plugroadState');
+  if (saved) {
+    try {
+      var p = JSON.parse(saved);
+      if (p.passwordCustomer) state.passwordCustomer = p.passwordCustomer;
+      if (p.passwordAdmin)    state.passwordAdmin    = p.passwordAdmin;
+      if (p.whatsappNumber)   state.whatsappNumber   = p.whatsappNumber;
+      if (p.categories)       state.categories       = p.categories;
+      if (p.products)         state.products         = p.products;
+      if (p.nextId)           state.nextId           = p.nextId;
+      if (p.cart)             state.cart             = p.cart;
+      if (p.selections)       state.selections       = p.selections;
+      if (p.categoryImages)   state.categoryImages   = p.categoryImages;
+    } catch(e) {}
+  }
+}
+
+function save() {
+  localStorage.setItem('plugroadState', JSON.stringify({
+    passwordCustomer: state.passwordCustomer,
+    passwordAdmin:    state.passwordAdmin,
+    whatsappNumber:   state.whatsappNumber,
+    categories:       state.categories,
+    products:         state.products,
+    nextId:           state.nextId,
+    cart:             state.cart,
+    selections:       state.selections,
+    categoryImages:   state.categoryImages
+  }));
+}
+
+function doLogin() {
+  var v   = document.getElementById('pw-input').value;
+  var err = document.getElementById('login-error');
+  if (v === state.passwordAdmin) {
+    state.isAdmin = true;
+    state.isLoggedIn = true;
+    showApp();
+  } else if (v === state.passwordCustomer) {
+    state.isAdmin = false;
+    state.isLoggedIn = true;
+    showApp();
+  } else {
+    err.textContent = 'Falsches Passwort.';
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+function doLogout() {
+  state.isLoggedIn = false;
+  state.isAdmin = false;
+  state.cart = [];
+  if (catSlideTimer) { clearInterval(catSlideTimer); catSlideTimer = null; }
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-error').textContent = '';
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('admin-bar').style.display = state.isAdmin ? 'block' : 'none';
+  document.getElementById('admin-badge').style.display = state.isAdmin ? 'inline' : 'none';
+  renderNav();
+  renderCatTabs();
+  renderProducts();
+  renderCatSlideshow();
+  startCatSlideshow();
+}
+
+// ═══════════ CATEGORY SLIDESHOW ═══════════
+var catSlideIndex = 0;
+var catSlideTimer = null;
+
+function renderCatSlideshow() {
+  var slides = document.getElementById('cat-slides');
+  var dots   = document.getElementById('cat-slide-dots');
+  if (!slides || !dots) return;
+
+  var html = '';
+  var dotsHtml = '';
+  for (var i = 0; i < state.categories.length; i++) {
+    var cat = state.categories[i];
+    var slug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    // 1. Custom-Bild bevorzugen (Admin-Upload), 2. Fallback Pfad-Konvention
+    var custom  = state.categoryImages && state.categoryImages[cat];
+    var imgSrc  = custom || ('kategorien/' + slug + '.jpg');
+    var catSafe = cat.replace(/'/g,"\\'");
+
+    var adminBtns = '';
+    if (state.isAdmin) {
+      adminBtns = '<div class="cat-slide-admin">' +
+        '<button class="cat-slide-admin-btn" onclick="event.stopPropagation();openSlideImg(\'' + catSafe + '\')">' +
+          (custom ? 'Bild aendern' : '+ Bild hinzufuegen') +
+        '</button>' +
+        (custom ? '<button class="cat-slide-admin-btn danger" onclick="event.stopPropagation();removeSlideImg(\'' + catSafe + '\')">Entfernen</button>' : '') +
+      '</div>';
+    }
+
+    html += '<div class="cat-slide ' + (state.isAdmin ? 'is-admin' : '') + '" onclick="setCategory(\'' + catSafe + '\');document.getElementById(\'products-container\').scrollIntoView({behavior:\'smooth\'})">' +
+              adminBtns +
+              '<img src="' + imgSrc + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+              '<div class="cat-slide-ph" style="display:none">' +
+                '<div class="cat-slide-ph-icon">📸</div>' +
+                '<div class="cat-slide-ph-name">' + cat + '</div>' +
+                '<div class="cat-slide-ph-file">' + (custom ? '(Eigenes Bild)' : 'kategorien/' + slug + '.jpg') + '</div>' +
+              '</div>' +
+              '<div class="cat-slide-overlay"><div class="cat-slide-label">' + cat + '</div></div>' +
+            '</div>';
+    dotsHtml += '<button class="cat-slide-dot ' + (i === 0 ? 'active' : '') + '" onclick="catGoTo(' + i + ')"></button>';
+  }
+  slides.innerHTML = html;
+  dots.innerHTML = dotsHtml;
+  catSlideIndex = 0;
+  updateCatSlidePos();
+}
+
+function updateCatSlidePos() {
+  var slides = document.getElementById('cat-slides');
+  if (!slides) return;
+  slides.style.transform = 'translateX(-' + (catSlideIndex * 100) + '%)';
+  var dots = document.querySelectorAll('.cat-slide-dot');
+  for (var i = 0; i < dots.length; i++) {
+    dots[i].classList.toggle('active', i === catSlideIndex);
+  }
+}
+
+function catSlide(dir) {
+  var total = state.categories.length;
+  if (!total) return;
+  catSlideIndex = (catSlideIndex + dir + total) % total;
+  updateCatSlidePos();
+  resetCatTimer();
+}
+
+function catGoTo(idx) {
+  catSlideIndex = idx;
+  updateCatSlidePos();
+  resetCatTimer();
+}
+
+function startCatSlideshow() {
+  if (catSlideTimer) clearInterval(catSlideTimer);
+  catSlideTimer = setInterval(function() {
+    var total = state.categories.length;
+    if (!total) return;
+    catSlideIndex = (catSlideIndex + 1) % total;
+    updateCatSlidePos();
+  }, 4500);
+}
+
+function resetCatTimer() {
+  if (catSlideTimer) clearInterval(catSlideTimer);
+  startCatSlideshow();
+}
+
+function setCategory(cat) {
+  state.activeCategory = cat;
+  renderNav();
+  renderCatTabs();
+  renderProducts();
+}
+
+function renderNav() {
+  var all = ['Alle'].concat(state.categories);
+  var html = '';
+  for (var i = 0; i < all.length; i++) {
+    var c = all[i];
+    var safe = c.replace(/'/g, "\\'");
+    html += '<button class="nav-btn ' + (state.activeCategory === c ? 'active' : '') + '" onclick="setCategory(\'' + safe + '\')">' + c + '</button>';
+  }
+  document.getElementById('main-nav').innerHTML = html;
+}
+
+function renderCatTabs() {
+  var all = ['Alle'].concat(state.categories);
+  var html = '';
+  for (var i = 0; i < all.length; i++) {
+    var c = all[i];
+    var safe = c.replace(/'/g, "\\'");
+    html += '<button class="cat-tab ' + (state.activeCategory === c ? 'active' : '') + '" onclick="setCategory(\'' + safe + '\')">' + c + '</button>';
+  }
+  document.getElementById('cat-tabs').innerHTML = html;
+}
+
+function renderProducts() {
+  var container = document.getElementById('products-container');
+  var cats = state.activeCategory === 'Alle' ? state.categories : [state.activeCategory];
+  var html = '';
+  for (var i = 0; i < cats.length; i++) {
+    var cat = cats[i];
+    var prods = [];
+    for (var j = 0; j < state.products.length; j++) {
+      if (state.products[j].category === cat) prods.push(state.products[j]);
+    }
+    if (state.activeCategory !== 'Alle' && prods.length === 0) continue;
+    if (state.activeCategory === 'Alle') {
+      html += '<div class="section-header"><h2 class="section-title">' + cat + '</h2><span class="section-count">' + prods.length + ' Artikel</span></div>';
+    }
+    html += '<div class="product-grid">';
+    if (prods.length === 0 && state.isAdmin) {
+      html += '<div class="no-products">Noch keine Artikel.</div>';
+    } else {
+      for (var k = 0; k < prods.length; k++) {
+        html += renderCard(prods[k]);
+      }
+    }
+    html += '</div>';
+    if (state.activeCategory === 'Alle') html += '<div style="margin-bottom:1rem"></div>';
+  }
+  if (!html) html = '<div style="text-align:center;padding:4rem;color:var(--p4)">Keine Artikel.</div>';
+  container.innerHTML = html;
+  if (state.isAdmin) {
+    var els = document.querySelectorAll('.admin-overlay');
+    for (var m = 0; m < els.length; m++) els[m].style.display = 'flex';
+  }
+}
+
+function makeSlug(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+
+function renderCard(p) {
+  var inCart = false;
+  for (var i = 0; i < state.cart.length; i++) if (state.cart[i].id === p.id) { inCart = true; break; }
+
+  var slug = makeSlug(p.name);
+  var imgHTML;
+  if (p.img) {
+    imgHTML = '<img src="' + p.img + '" alt="' + p.name + '">';
+  } else {
+    imgHTML = '<div class="img-ph"><div class="img-ph-icon">[Bild]</div><div class="img-ph-name">Empfohlener Dateiname:<br><span class="img-ph-filename">bilder/' + slug + '.jpg</span></div></div>';
+  }
+
+  // Vorab gewaehlte Optionen (z.B. wenn schon im Warenkorb oder vorher angeklickt)
+  if (!state.selections[p.id]) state.selections[p.id] = { size: null, color: null };
+  // Auto-Select wenn nur eine Option vorhanden
+  if (p.sizes.length === 1)  state.selections[p.id].size  = p.sizes[0];
+  if (p.colors.length === 1) state.selections[p.id].color = p.colors[0];
+  var sel = state.selections[p.id];
+
+  var sizesHTML = '';
+  if (p.sizes.length) {
+    sizesHTML += '<div class="picker-label">Groesse' + (p.sizes.length > 1 ? ' <span class="req">·</span> bitte waehlen' : '') + '</div>';
+    sizesHTML += '<div class="picker-row">';
+    for (var s = 0; s < p.sizes.length; s++) {
+      var sv = p.sizes[s].replace(/'/g, "\\'");
+      var act = sel.size === p.sizes[s] ? ' active' : '';
+      sizesHTML += '<button type="button" class="picker-opt' + act + '" onclick="pickOption(' + p.id + ',\'size\',\'' + sv + '\')">' + p.sizes[s] + '</button>';
+    }
+    sizesHTML += '</div>';
+  }
+
+  var colorsHTML = '';
+  if (p.colors.length) {
+    colorsHTML += '<div class="picker-label">Farbe' + (p.colors.length > 1 ? ' <span class="req">·</span> bitte waehlen' : '') + '</div>';
+    colorsHTML += '<div class="picker-row">';
+    for (var c = 0; c < p.colors.length; c++) {
+      var cv = p.colors[c].replace(/'/g, "\\'");
+      var actc = sel.color === p.colors[c] ? ' active' : '';
+      colorsHTML += '<button type="button" class="picker-opt' + actc + '" onclick="pickOption(' + p.id + ',\'color\',\'' + cv + '\')">' + p.colors[c] + '</button>';
+    }
+    colorsHTML += '</div>';
+  }
+
+  return '<div class="product-card" id="card-' + p.id + '">' +
+    '<div class="product-img">' + imgHTML +
+      '<div class="admin-overlay" style="display:' + (state.isAdmin ? 'flex' : 'none') + '">' +
+        '<button class="admin-edit-btn" onclick="event.stopPropagation();openEditProduct(' + p.id + ')">Bearbeiten</button>' +
+        '<button class="admin-del-btn" onclick="event.stopPropagation();deleteProduct(' + p.id + ')">Loeschen</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="product-info">' +
+      '<div class="product-cat-tag">' + p.category + '</div>' +
+      '<div class="product-name">' + p.name + '</div>' +
+      '<div class="product-desc">' + p.desc + '</div>' +
+      sizesHTML + colorsHTML +
+      '<div class="picker-hint" id="hint-' + p.id + '">Bitte zuerst eine Auswahl treffen.</div>' +
+    '</div>' +
+    '<button class="add-to-cart ' + (inCart ? 'added' : '') + '" id="atc-' + p.id + '" onclick="toggleCartProduct(' + p.id + ')">' +
+      (inCart ? 'Ausgewaehlt' : 'Zur Auswahl') +
+    '</button>' +
+  '</div>';
+}
+
+function pickOption(productId, type, value) {
+  if (!state.selections[productId]) state.selections[productId] = { size: null, color: null };
+  state.selections[productId][type] = value;
+  // Hint ausblenden
+  var hint = document.getElementById('hint-' + productId);
+  if (hint) hint.classList.remove('show');
+  // Falls Produkt bereits im Warenkorb: dort auch aktualisieren
+  for (var i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].id === productId) {
+      if (type === 'size')  state.cart[i].selectedSize  = value;
+      if (type === 'color') state.cart[i].selectedColor = value;
+      save();
+      renderCartItems();
+      break;
+    }
+  }
+  // Nur die betroffene Card neu zeichnen (Picker-Buttons aktualisieren)
+  redrawCardPickers(productId);
+}
+
+function redrawCardPickers(productId) {
+  var card = document.getElementById('card-' + productId);
+  if (!card) return;
+  var sel = state.selections[productId];
+  if (!sel) return;
+  var buttons = card.querySelectorAll('.picker-opt');
+  for (var i = 0; i < buttons.length; i++) {
+    var b = buttons[i];
+    var val = b.textContent;
+    var row = b.parentNode;
+    // Welche Reihe? Erste = Groesse, zweite = Farbe — anhand Position im DOM
+    var labels = card.querySelectorAll('.picker-label');
+    var isSize = false;
+    for (var j = 0; j < labels.length; j++) {
+      if (labels[j].nextElementSibling === row) {
+        isSize = labels[j].textContent.toLowerCase().indexOf('groesse') === 0;
+        break;
+      }
+    }
+    var current = isSize ? sel.size : sel.color;
+    b.classList.toggle('active', current === val);
+  }
+}
+
+function toggleCartProduct(id) {
+  var idx = -1;
+  for (var i = 0; i < state.cart.length; i++) if (state.cart[i].id === id) { idx = i; break; }
+  if (idx > -1) {
+    // Entfernen
+    state.cart.splice(idx, 1);
+  } else {
+    // Hinzufuegen — vorher pruefen, ob Auswahl noetig und getroffen wurde
+    var prod = null;
+    for (var j = 0; j < state.products.length; j++) if (state.products[j].id === id) { prod = state.products[j]; break; }
+    if (!prod) return;
+    if (!state.selections[id]) state.selections[id] = { size: null, color: null };
+    var sel = state.selections[id];
+    var needsSize  = prod.sizes.length  > 1 && !sel.size;
+    var needsColor = prod.colors.length > 1 && !sel.color;
+    if (needsSize || needsColor) {
+      var hint = document.getElementById('hint-' + id);
+      if (hint) {
+        var msg = 'Bitte zuerst ' + (needsSize ? 'eine Groesse' : '') + (needsSize && needsColor ? ' und ' : '') + (needsColor ? 'eine Farbe' : '') + ' waehlen.';
+        hint.textContent = msg;
+        hint.classList.add('show');
+      }
+      return;
+    }
+    state.cart.push({
+      id: prod.id, name: prod.name, category: prod.category, img: prod.img,
+      sizes: prod.sizes, colors: prod.colors,
+      selectedSize:  sel.size  || (prod.sizes.length  === 1 ? prod.sizes[0]  : null),
+      selectedColor: sel.color || (prod.colors.length === 1 ? prod.colors[0] : null)
+    });
+  }
+  save();
+  updateCartBadge();
+  var btn = document.getElementById('atc-' + id);
+  if (btn) {
+    var inCart = false;
+    for (var k = 0; k < state.cart.length; k++) if (state.cart[k].id === id) { inCart = true; break; }
+    btn.className = 'add-to-cart ' + (inCart ? 'added' : '');
+    btn.textContent = inCart ? 'Ausgewaehlt' : 'Zur Auswahl';
+  }
+  renderCartItems();
+}
+
+function updateCartBadge() {
+  document.getElementById('cart-count-badge').textContent = state.cart.length;
+}
+
+function toggleCart() {
+  var s = document.getElementById('cart-sidebar');
+  var o = document.getElementById('cart-overlay');
+  var open = s.classList.toggle('open');
+  o.classList.toggle('open', open);
+  if (open) renderCartItems();
+}
+
+function renderCartItems() {
+  var list = document.getElementById('cart-items-list');
+  document.getElementById('cart-summary-text').textContent = state.cart.length + ' Artikel';
+  if (!state.cart.length) {
+    list.innerHTML = '<div class="cart-empty"><div>Noch nichts ausgewaehlt.</div></div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < state.cart.length; i++) {
+    var item = state.cart[i];
+    var imgEl = item.img
+      ? '<img class="cart-item-img" src="' + item.img + '" alt="' + item.name + '">'
+      : '<div class="cart-item-img-ph">[Bild]</div>';
+
+    // Groesse: Picker wenn mehrere verfuegbar, sonst nur Text
+    var sizesBlock = '';
+    if (item.sizes && item.sizes.length > 1) {
+      sizesBlock += '<div class="picker-label">Groesse</div><div class="picker-row">';
+      for (var s = 0; s < item.sizes.length; s++) {
+        var sv = item.sizes[s].replace(/'/g, "\\'");
+        var act = item.selectedSize === item.sizes[s] ? ' active' : '';
+        sizesBlock += '<button type="button" class="picker-opt' + act + '" onclick="setCartItemOption(' + item.id + ',\'size\',\'' + sv + '\')">' + item.sizes[s] + '</button>';
+      }
+      sizesBlock += '</div>';
+    } else if (item.selectedSize) {
+      sizesBlock = '<div class="cart-item-detail">Groesse: ' + item.selectedSize + '</div>';
+    }
+
+    var colorsBlock = '';
+    if (item.colors && item.colors.length > 1) {
+      colorsBlock += '<div class="picker-label">Farbe</div><div class="picker-row">';
+      for (var c = 0; c < item.colors.length; c++) {
+        var cv = item.colors[c].replace(/'/g, "\\'");
+        var actc = item.selectedColor === item.colors[c] ? ' active' : '';
+        colorsBlock += '<button type="button" class="picker-opt' + actc + '" onclick="setCartItemOption(' + item.id + ',\'color\',\'' + cv + '\')">' + item.colors[c] + '</button>';
+      }
+      colorsBlock += '</div>';
+    } else if (item.selectedColor) {
+      colorsBlock = '<div class="cart-item-detail">Farbe: ' + item.selectedColor + '</div>';
+    }
+
+    html += '<div class="cart-item">' + imgEl +
+      '<div class="cart-item-info">' +
+        '<div class="cart-item-name">' + item.name + '</div>' +
+        '<div class="cart-item-cat">' + item.category + '</div>' +
+        sizesBlock + colorsBlock +
+        '<button class="cart-item-remove" onclick="toggleCartProduct(' + item.id + ')">Entfernen</button>' +
+      '</div>' +
+    '</div>';
+  }
+  list.innerHTML = html;
+}
+
+function setCartItemOption(productId, type, value) {
+  for (var i = 0; i < state.cart.length; i++) {
+    if (state.cart[i].id === productId) {
+      if (type === 'size')  state.cart[i].selectedSize  = value;
+      if (type === 'color') state.cart[i].selectedColor = value;
+      break;
+    }
+  }
+  // selections-Tracking ebenfalls aktualisieren, damit die Karte konsistent bleibt
+  if (!state.selections[productId]) state.selections[productId] = { size: null, color: null };
+  state.selections[productId][type] = value;
+  save();
+  renderCartItems();
+  redrawCardPickers(productId);
+}
+
+function sendToWhatsApp() {
+  if (!state.cart.length) { alert('Bitte zuerst Artikel auswaehlen.'); return; }
+  // Vor dem Versand pruefen, dass alle Items eine Auswahl haben
+  var missing = [];
+  for (var i = 0; i < state.cart.length; i++) {
+    var it = state.cart[i];
+    if (it.sizes && it.sizes.length > 1 && !it.selectedSize)   missing.push(it.name + ' (Groesse)');
+    if (it.colors && it.colors.length > 1 && !it.selectedColor) missing.push(it.name + ' (Farbe)');
+  }
+  if (missing.length) {
+    alert('Bitte noch auswaehlen:\n\n- ' + missing.join('\n- '));
+    return;
+  }
+
+  var note = document.getElementById('cart-note').value;
+  var msg = 'Anfrage - desgnerplug.de Katalog\n\n';
+  for (var j = 0; j < state.cart.length; j++) {
+    var item = state.cart[j];
+    msg += (j + 1) + '. ' + item.name + ' (' + item.category + ')\n';
+    if (item.selectedSize)  msg += '   Groesse: ' + item.selectedSize + '\n';
+    if (item.selectedColor) msg += '   Farbe: '   + item.selectedColor + '\n';
+    msg += '\n';
+  }
+  if (note) msg += 'Nachricht: ' + note + '\n';
+  window.open('https://wa.me/' + state.whatsappNumber + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function openAddProduct() {
+  state.editingId = null;
+  state.editSizes = [];
+  state.editColors = [];
+  document.getElementById('product-modal-title').textContent = 'Artikel hinzufuegen';
+  document.getElementById('pm-name').value = '';
+  document.getElementById('pm-desc').value = '';
+  document.getElementById('pm-img').value = '';
+  setProductImgPreview(null);
+  populateCatSelect();
+  renderTagInputs();
+  document.getElementById('product-modal').classList.add('open');
+}
+
+function openEditProduct(id) {
+  var p = null;
+  for (var i = 0; i < state.products.length; i++) if (state.products[i].id === id) { p = state.products[i]; break; }
+  if (!p) return;
+  state.editingId = id;
+  state.editSizes  = p.sizes.slice();
+  state.editColors = p.colors.slice();
+  document.getElementById('product-modal-title').textContent = 'Artikel bearbeiten';
+  document.getElementById('pm-name').value = p.name;
+  document.getElementById('pm-desc').value = p.desc;
+  document.getElementById('pm-img').value  = p.img || '';
+  setProductImgPreview(p.img || null);
+  populateCatSelect(p.category);
+  renderTagInputs();
+  document.getElementById('product-modal').classList.add('open');
+}
+
+// ═══════════ BILD-UPLOAD (Drag & Drop / Klick / Paste) ═══════════
+function setProductImgPreview(src) {
+  var empty   = document.getElementById('pm-img-empty');
+  var preview = document.getElementById('pm-img-preview');
+  var img     = document.getElementById('pm-img-preview-img');
+  if (src) {
+    img.src = src;
+    empty.style.display = 'none';
+    preview.style.display = 'flex';
+  } else {
+    img.src = '';
+    empty.style.display = 'flex';
+    preview.style.display = 'none';
+  }
+}
+
+function clearProductImg() {
+  document.getElementById('pm-img').value = '';
+  document.getElementById('pm-img-file').value = '';
+  setProductImgPreview(null);
+}
+
+function handleImgFile(file) {
+  if (!file) return;
+  if (!file.type || file.type.indexOf('image/') !== 0) {
+    alert('Bitte eine Bilddatei auswaehlen (JPG, PNG, WEBP).');
+    return;
+  }
+  // Warnung bei sehr grossen Dateien (>4 MB) — Base64 macht ca. +33%
+  if (file.size > 4 * 1024 * 1024) {
+    if (!confirm('Die Datei ist groesser als 4 MB. Das kann den Katalog langsam machen. Trotzdem hinzufuegen?')) return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    document.getElementById('pm-img').value = dataUrl;
+    setProductImgPreview(dataUrl);
+  };
+  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); };
+  reader.readAsDataURL(file);
+}
+
+function handleImgDrop(event) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag');
+  var files = event.dataTransfer && event.dataTransfer.files;
+  if (files && files.length > 0) {
+    handleImgFile(files[0]);
+  }
+}
+
+// Strg+V Paste-Support: fuer Produkt-Modal und Slide-Modal
+document.addEventListener('paste', function(event) {
+  var modal = document.getElementById('product-modal');
+  if (modal && modal.classList.contains('open')) {
+    var items = event.clipboardData && event.clipboardData.items;
+    if (!items) return;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type && items[i].type.indexOf('image/') === 0) {
+        var file = items[i].getAsFile();
+        if (file) {
+          event.preventDefault();
+          handleImgFile(file);
+          return;
+        }
+      }
+    }
+    return;
+  }
+  var slideModal = document.getElementById('slide-img-modal');
+  if (slideModal && slideModal.classList.contains('open')) {
+    var items2 = event.clipboardData && event.clipboardData.items;
+    if (!items2) return;
+    for (var j = 0; j < items2.length; j++) {
+      if (items2[j].type && items2[j].type.indexOf('image/') === 0) {
+        var file2 = items2[j].getAsFile();
+        if (file2) {
+          event.preventDefault();
+          handleSlideImgFile(file2);
+          return;
+        }
+      }
+    }
+  }
+});
+
+// ═══════════ SLIDE-VORSCHAUBILD ("Unsere Kategorien") ═══════════
+function openSlideImg(cat) {
+  document.getElementById('sm-img-cat').value = cat;
+  document.getElementById('slide-img-cat-label').textContent = 'Kategorie: ' + cat;
+  var existing = state.categoryImages && state.categoryImages[cat];
+  setSlideImgPreview(existing || null);
+  document.getElementById('sm-img-data').value = existing || '';
+  document.getElementById('sm-img-file').value = '';
+  document.getElementById('slide-img-modal').classList.add('open');
+}
+
+function setSlideImgPreview(src) {
+  var empty   = document.getElementById('sm-img-empty');
+  var preview = document.getElementById('sm-img-preview');
+  var img     = document.getElementById('sm-img-preview-img');
+  if (src) {
+    img.src = src;
+    empty.style.display = 'none';
+    preview.style.display = 'flex';
+  } else {
+    img.src = '';
+    empty.style.display = 'flex';
+    preview.style.display = 'none';
+  }
+}
+
+function clearSlideImgPreview() {
+  document.getElementById('sm-img-data').value = '';
+  document.getElementById('sm-img-file').value = '';
+  setSlideImgPreview(null);
+}
+
+function handleSlideImgFile(file) {
+  if (!file) return;
+  if (!file.type || file.type.indexOf('image/') !== 0) {
+    alert('Bitte eine Bilddatei auswaehlen (JPG, PNG, WEBP).');
+    return;
+  }
+  if (file.size > 4 * 1024 * 1024) {
+    if (!confirm('Die Datei ist groesser als 4 MB. Das kann den Katalog langsam machen. Trotzdem hinzufuegen?')) return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var dataUrl = e.target.result;
+    document.getElementById('sm-img-data').value = dataUrl;
+    setSlideImgPreview(dataUrl);
+  };
+  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); };
+  reader.readAsDataURL(file);
+}
+
+function handleSlideImgDrop(event) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('drag');
+  var files = event.dataTransfer && event.dataTransfer.files;
+  if (files && files.length > 0) {
+    handleSlideImgFile(files[0]);
+  }
+}
+
+function saveSlideImg() {
+  var cat  = document.getElementById('sm-img-cat').value;
+  var data = document.getElementById('sm-img-data').value;
+  if (!cat) return;
+  if (!state.categoryImages) state.categoryImages = {};
+  if (data) {
+    state.categoryImages[cat] = data;
+  } else {
+    delete state.categoryImages[cat];
+  }
+  save();
+  closeModal('slide-img-modal');
+  renderCatSlideshow();
+}
+
+function removeSlideImg(cat) {
+  if (!confirm('Vorschaubild fuer "' + cat + '" entfernen?')) return;
+  if (state.categoryImages && state.categoryImages[cat]) {
+    delete state.categoryImages[cat];
+    save();
+    renderCatSlideshow();
+  }
+}
+
+function populateCatSelect(sel) {
+  var html = '';
+  for (var i = 0; i < state.categories.length; i++) {
+    var c = state.categories[i];
+    html += '<option value="' + c + '"' + (c === sel ? ' selected' : '') + '>' + c + '</option>';
+  }
+  document.getElementById('pm-cat').innerHTML = html;
+}
+
+function renderTagInputs() {
+  var sc = document.getElementById('pm-sizes-container');
+  var cc = document.getElementById('pm-colors-container');
+  var sh = '';
+  for (var i = 0; i < state.editSizes.length; i++) {
+    sh += '<span class="tag-item">' + state.editSizes[i] + '<span class="tag-remove" onclick="removeTag(\'sizes\',' + i + ')">x</span></span>';
+  }
+  sh += '<input class="form-input" id="pm-sizes-input" placeholder="S/M/L" style="flex:1;min-width:80px" onkeydown="addTag(event,\'sizes\')">';
+  sc.innerHTML = sh;
+
+  var ch = '';
+  for (var j = 0; j < state.editColors.length; j++) {
+    ch += '<span class="tag-item">' + state.editColors[j] + '<span class="tag-remove" onclick="removeTag(\'colors\',' + j + ')">x</span></span>';
+  }
+  ch += '<input class="form-input" id="pm-colors-input" placeholder="Schwarz" style="flex:1;min-width:100px" onkeydown="addTag(event,\'colors\')">';
+  cc.innerHTML = ch;
+}
+
+function addTag(event, type) {
+  if (event.key !== 'Enter' && event.key !== ',') return;
+  event.preventDefault();
+  var val = event.target.value.trim();
+  if (!val) return;
+  if (type === 'sizes') state.editSizes.push(val);
+  else state.editColors.push(val);
+  renderTagInputs();
+}
+
+function removeTag(type, idx) {
+  if (type === 'sizes') state.editSizes.splice(idx, 1);
+  else state.editColors.splice(idx, 1);
+  renderTagInputs();
+}
+
+function saveProduct() {
+  var name = document.getElementById('pm-name').value.trim();
+  var cat  = document.getElementById('pm-cat').value;
+  var desc = document.getElementById('pm-desc').value.trim();
+  var img  = document.getElementById('pm-img').value.trim();
+  if (!name) { alert('Bitte Artikelname eingeben.'); return; }
+  if (state.editingId !== null) {
+    for (var i = 0; i < state.products.length; i++) {
+      if (state.products[i].id === state.editingId) {
+        state.products[i].name     = name;
+        state.products[i].category = cat;
+        state.products[i].desc     = desc;
+        state.products[i].sizes    = state.editSizes.slice();
+        state.products[i].colors   = state.editColors.slice();
+        state.products[i].img      = img || null;
+        break;
+      }
+    }
+  } else {
+    state.products.push({
+      id: state.nextId++,
+      name: name, category: cat, desc: desc,
+      sizes: state.editSizes.slice(), colors: state.editColors.slice(),
+      img: img || null
+    });
+  }
+  save();
+  closeModal('product-modal');
+  renderNav();
+  renderCatTabs();
+  renderProducts();
+}
+
+function deleteProduct(id) {
+  if (!confirm('Artikel loeschen?')) return;
+  var newProds = [];
+  for (var i = 0; i < state.products.length; i++) {
+    if (state.products[i].id !== id) newProds.push(state.products[i]);
+  }
+  state.products = newProds;
+  var newCart = [];
+  for (var j = 0; j < state.cart.length; j++) {
+    if (state.cart[j].id !== id) newCart.push(state.cart[j]);
+  }
+  state.cart = newCart;
+  save();
+  renderProducts();
+  updateCartBadge();
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function openCatManager() {
+  renderCatManageList();
+  document.getElementById('cat-modal').classList.add('open');
+}
+
+function renderCatManageList() {
+  var html = '';
+  for (var i = 0; i < state.categories.length; i++) {
+    html += '<div class="cat-chip">' + state.categories[i] + '<span class="chip-del" onclick="deleteCat(' + i + ')">x</span></div>';
+  }
+  document.getElementById('cat-manage-list').innerHTML = html;
+}
+
+function addCategory() {
+  var val = document.getElementById('new-cat-input').value.trim();
+  if (!val) return;
+  if (state.categories.indexOf(val) === -1) {
+    state.categories.push(val);
+    save();
+    renderCatManageList();
+    renderNav();
+    renderCatTabs();
+    renderProducts();
+    renderCatSlideshow();
+  }
+  document.getElementById('new-cat-input').value = '';
+}
+
+function deleteCat(idx) {
+  var cat = state.categories[idx];
+  var hasProds = false;
+  for (var i = 0; i < state.products.length; i++) {
+    if (state.products[i].category === cat) { hasProds = true; break; }
+  }
+  if (hasProds && !confirm('Kategorie "' + cat + '" loeschen?')) return;
+  state.categories.splice(idx, 1);
+  if (state.activeCategory === cat) state.activeCategory = 'Alle';
+  save();
+  renderCatManageList();
+  renderNav();
+  renderCatTabs();
+  renderProducts();
+  renderCatSlideshow();
+}
+
+function openPwChange() {
+  document.getElementById('new-pw-customer').value = '';
+  document.getElementById('new-pw-admin').value = '';
+  document.getElementById('pw-modal').classList.add('open');
+}
+
+function savePw() {
+  var c = document.getElementById('new-pw-customer').value;
+  var a = document.getElementById('new-pw-admin').value;
+  if (c) state.passwordCustomer = c;
+  if (a) state.passwordAdmin = a;
+  save();
+  alert('Passwoerter gespeichert!');
+  document.getElementById('pw-modal').classList.remove('open');
+}
+
+function openSettings() {
+  document.getElementById('set-wa-num').value = state.whatsappNumber;
+  document.getElementById('settings-modal').classList.add('open');
+}
+
+function saveSettings() {
+  var v = document.getElementById('set-wa-num').value.trim();
+  if (v) state.whatsappNumber = v;
+  save();
+  alert('Gespeichert!');
+  document.getElementById('settings-modal').classList.remove('open');
+}
+
+document.getElementById('pw-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('new-cat-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') addCategory();
+});
+
+var bgs = document.querySelectorAll('.modal-bg');
+for (var b = 0; b < bgs.length; b++) {
+  bgs[b].addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+}
+
+init();
+</script>
+</body>
+</html>
+
