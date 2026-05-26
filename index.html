@@ -1854,6 +1854,7 @@ function openAddProduct() {
   state.editingId = null;
   state.editSizes = [];
   state.editColors = [];
+  state.editImgs = [];
   document.getElementById('product-modal-title').textContent = 'Artikel hinzufügen';
   document.getElementById('pm-name').value = '';
   document.getElementById('pm-desc').value = '';
@@ -1882,32 +1883,19 @@ function openEditProduct(id) {
 
 // ═══════════ BILD-UPLOAD (Mehrere Bilder, Drag&Drop, Klick, Paste) ═══════════
 function renderEditImgs() {
-  var empty = document.getElementById('pm-img-empty');
-  var multi = document.getElementById('pm-img-multi');
-  var list  = document.getElementById('pm-img-list');
-  var hidden= document.getElementById('pm-img');
-
-  if (!state.editImgs.length) {
+  var empty  = document.getElementById('pm-img-empty');
+  var multi  = document.getElementById('pm-img-multi');
+  var list   = document.getElementById('pm-img-list');
+  var hidden = document.getElementById('pm-img');
+  if (!state.editImgs || !state.editImgs.length) {
     empty.style.display = 'flex';
-    preview.style.display = 'none';
-  }
-}
-
-function clearProductImg() {
-  document.getElementById('pm-img').value = '';
-  document.getElementById('pm-img-file').value = '';
-  setProductImgPreview(null);
-}
-
-function handleImgFile(file) {
-  if (!file) return;
-  if (!file.type || file.type.indexOf('image/') !== 0) {
-    alert('Bitte eine Bilddatei auswählen (JPG, PNG, WEBP).');
+    multi.style.display = 'none';
+    if (list)   list.innerHTML = '';
+    if (hidden) hidden.value  = '';
     return;
   }
   empty.style.display = 'none';
   multi.style.display = 'flex';
-
   var html = '';
   for (var i = 0; i < state.editImgs.length; i++) {
     var isMain = (i === 0);
@@ -1925,7 +1913,6 @@ function handleImgFile(file) {
             '</div>';
   }
   list.innerHTML = html;
-  // Hidden input enthaelt das erste Bild — fuer evtl. legacy-Code
   hidden.value = state.editImgs[0] || '';
 }
 
