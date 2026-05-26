@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
 <meta charset="UTF-8">
@@ -309,6 +309,47 @@ main{max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem;background:transparen
 }
 .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
 .product-card:hover .product-img img{transform:scale(1.05);}
+
+/* Produktbild-Galerie (mehrere Bilder pro Artikel, mit Pfeilen) */
+.card-gal{position:relative;width:100%;height:100%;}
+.card-gal-img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .25s ease;
+}
+.card-gal-img.active{opacity:1;}
+.card-gal-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(5,5,5,0.55);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--white);
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;line-height:1;cursor:pointer;
+  opacity:0;transition:opacity .2s, background .2s, transform .15s;
+  z-index:3;padding:0;
+}
+.card-gal-arrow.prev{left:6px;}
+.card-gal-arrow.next{right:6px;}
+.product-card:hover .card-gal-arrow{opacity:1;}
+.card-gal-arrow:hover{background:var(--white);color:var(--bg-0);border-color:var(--white);}
+.card-gal-dots{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:4px;z-index:3;
+  background:rgba(5,5,5,0.45);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:4px 7px;border-radius:999px;
+}
+.card-gal-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,0.4);
+  transition:background .2s, width .2s;
+}
+.card-gal-dot.active{background:var(--white);width:14px;border-radius:3px;}
+/* Auf Mobile Pfeile immer sichtbar (da kein Hover) */
+@media(hover:none){
+  .card-gal-arrow{opacity:1;}
+}
 .img-ph{display:flex;flex-direction:column;align-items:center;gap:8px;padding:0.75rem;text-align:center;}
 .img-ph-icon{width:48px;height:48px;border:1px dashed var(--line-2);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text-dim);border-radius:8px;background:var(--bg-2);}
 .img-ph-name{font-size:10px;color:var(--text-mute);letter-spacing:0.04em;line-height:1.4;}
@@ -437,6 +478,67 @@ main{max-width:1100px;margin:0 auto;padding:1rem 1rem 3rem;background:transparen
 .img-drop-preview img{max-width:100%;max-height:220px;display:block;border-radius:6px;border:1px solid var(--line);}
 .img-drop-clear{background:transparent;border:1px solid #FF8888;color:#FF8888;font-family:'Inter',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;cursor:pointer;border-radius:6px;transition:background .2s;}
 .img-drop-clear:hover{background:var(--red-soft);}
+
+/* ════════ MULTI-IMAGE UPLOAD ════════ */
+.img-drop.multi{min-height:auto;padding:1rem;}
+.img-drop-multi{width:100%;display:flex;flex-direction:column;gap:10px;}
+.img-thumb-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(96px,1fr));
+  gap:8px;
+}
+.img-thumb{
+  position:relative;
+  aspect-ratio:1/1;
+  background:var(--bg-3);
+  border:1px solid var(--line);
+  border-radius:8px;overflow:hidden;
+  cursor:default;
+}
+.img-thumb.is-main{border-color:var(--white);box-shadow:0 0 0 1px var(--white);}
+.img-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-thumb-main-badge{
+  position:absolute;top:4px;left:4px;
+  background:var(--white);color:var(--bg-0);
+  font-size:8.5px;font-weight:900;
+  letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 6px;border-radius:4px;
+  pointer-events:none;
+}
+.img-thumb-actions{
+  position:absolute;top:4px;right:4px;
+  display:flex;gap:3px;
+}
+.img-thumb-btn{
+  background:rgba(5,5,5,0.85);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--white);
+  width:22px;height:22px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;line-height:1;cursor:pointer;padding:0;
+  transition:background .15s, color .15s;
+}
+.img-thumb-btn:hover{background:var(--white);color:var(--bg-0);border-color:var(--white);}
+.img-thumb-btn.del:hover{background:#e07070;color:var(--white);border-color:#e07070;}
+.img-thumb-arrows{
+  position:absolute;bottom:4px;left:4px;right:4px;
+  display:flex;justify-content:space-between;gap:3px;
+  opacity:0;transition:opacity .15s;
+}
+.img-thumb:hover .img-thumb-arrows{opacity:1;}
+@media(hover:none){.img-thumb-arrows{opacity:1;}}
+.img-add-more{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:transparent;
+  border:1px dashed var(--line-2);color:var(--text-mute);
+  font-family:'Inter',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:10px 16px;border-radius:8px;cursor:pointer;
+  transition:border-color .15s, color .15s, background .15s;
+}
+.img-add-more:hover{border-color:var(--white);color:var(--white);background:var(--bg-3);}
+.img-add-more span{font-size:14px;}
 
 /* ════════ CATEGORY SLIDESHOW ════════ */
 .cat-slideshow-section{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 0;position:relative;z-index:2;}
@@ -731,7 +833,7 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
 <div id="login-screen">
   <div class="login-box">
 
-    <div class="login-logo-slot"><img src="logo.png" style="width:140px;display:block;margin:0 auto 1.25rem"></div>
+    <div class="login-logo-slot"><img src="Logo.png" style="width:140px;display:block;margin:0 auto 1.25rem"></div>
 
     <div class="login-brand">desgnerplug.de</div>
     <div class="login-sub">Exklusiver Katalog</div>
@@ -762,7 +864,7 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
         <span id="admin-badge" class="admin-badge" style="display:none">Admin</span>
       </div>
       <div class="header-logo" onclick="setCategory('Alle');window.scrollTo({top:0,behavior:'smooth'})">
-        <div class="header-logo-slot"><img src="logo.png" alt="desgnerplug.de"></div>
+        <div class="header-logo-slot"><img src="Logo.png" alt="desgnerplug.de"></div>
       </div>
       <div class="header-right">
         <button class="cart-btn" onclick="toggleCart()" aria-label="Warenkorb">
@@ -911,7 +1013,7 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
   <div class="trust-section">
     <div class="trust-inner">
       <div class="trust-header">
-        <div class="trust-mainlogo"><img src="logo.png" alt="desgnerplug.de"></div>
+        <div class="trust-mainlogo"><img src="Logo.png" alt="desgnerplug.de"></div>
         <h2 class="trust-title">Luxury Lifestyle &middot; Premium Produkte</h2>
         <div class="trust-subtitle">Vergleich &middot; Qualität &middot; Vertrauen</div>
       </div>
@@ -958,7 +1060,7 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
   </div>
 
   <footer>
-    <div class="footer-logo-slot"><img src="logo.png" alt="desgnerplug.de" style="display:block;margin:0 auto 14px"></div>
+    <div class="footer-logo-slot"><img src="Logo.png" alt="desgnerplug.de" style="display:block;margin:0 auto 14px"></div>
     <div class="footer-brand">desgnerplug.de</div>
     <div class="footer-note">Anfragen nur über WhatsApp &middot; Kein Onlineverkauf</div>
     <div class="footer-socials">
@@ -1006,22 +1108,24 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
     <div class="form-group"><label class="form-label">Artikelname</label><input class="form-input" id="pm-name"></div>
     <div class="form-group"><label class="form-label">Beschreibung</label><textarea class="form-textarea" id="pm-desc"></textarea></div>
     <div class="form-group">
-      <label class="form-label">Bild</label>
-      <div class="img-drop" id="pm-img-drop"
-           onclick="document.getElementById('pm-img-file').click()"
+      <label class="form-label">Bilder &middot; <span style="text-transform:none;letter-spacing:0;font-weight:500;color:var(--text-mute)">unbegrenzt, erstes Bild ist das Hauptbild</span></label>
+      <div class="img-drop multi" id="pm-img-drop"
+           onclick="if(event.target===this||event.target.id==='pm-img-empty'||event.target.classList.contains('img-drop-empty')||event.target.parentNode.classList.contains('img-drop-empty')) document.getElementById('pm-img-file').click()"
            ondragover="event.preventDefault();this.classList.add('drag');"
            ondragleave="this.classList.remove('drag');"
            ondrop="handleImgDrop(event)">
         <div class="img-drop-empty" id="pm-img-empty">
           <div class="img-drop-icon">⬆</div>
-          <div class="img-drop-text">Bild hierher ziehen oder klicken</div>
-          <div class="img-drop-hint">JPG, PNG, WEBP &middot; auch per Strg+V einfügen</div>
+          <div class="img-drop-text">Bilder hierher ziehen oder klicken</div>
+          <div class="img-drop-hint">JPG, PNG, WEBP &middot; auch per Strg+V einfügen &middot; mehrere gleichzeitig</div>
         </div>
-        <div class="img-drop-preview" id="pm-img-preview" style="display:none">
-          <img id="pm-img-preview-img" alt="">
-          <button type="button" class="img-drop-clear" onclick="event.stopPropagation();clearProductImg()">Bild entfernen</button>
+        <div class="img-drop-multi" id="pm-img-multi" style="display:none">
+          <div class="img-thumb-list" id="pm-img-list"></div>
+          <button type="button" class="img-add-more" onclick="event.stopPropagation();document.getElementById('pm-img-file').click()">
+            <span>+</span> Weiteres Bild
+          </button>
         </div>
-        <input type="file" id="pm-img-file" accept="image/*" style="display:none" onchange="handleImgFile(this.files[0])">
+        <input type="file" id="pm-img-file" accept="image/*" multiple style="display:none" onchange="handleImgFiles(this.files);this.value='';">
         <input type="hidden" id="pm-img">
       </div>
     </div>
@@ -1149,11 +1253,13 @@ var state = {
   cart: [],
   selections: {},
   categoryImages: {},
+  cardGallery: {},
   nextId: 100,
   activeCategory: 'Alle',
   editingId: null,
   editSizes: [],
-  editColors: []
+  editColors: [],
+  editImgs: []
 };
 
 function init() {
@@ -1380,14 +1486,65 @@ function makeSlug(name) {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 
+// Liefert die Bild-Liste eines Produkts. Bevorzugt das neue imgs-Array,
+// faellt zurueck aufs alte img-Feld (Rueckwaertskompatibilitaet).
+function productImages(p) {
+  if (p.imgs && p.imgs.length) return p.imgs.slice();
+  if (p.img) return [p.img];
+  return [];
+}
+
+// Pfeil-Navigation auf einer Produktkarte. delta = -1 oder +1
+function cardGal(productId, delta) {
+  var prod = null;
+  for (var i = 0; i < state.products.length; i++) {
+    if (state.products[i].id === productId) { prod = state.products[i]; break; }
+  }
+  if (!prod) return;
+  var imgs = productImages(prod);
+  if (imgs.length <= 1) return;
+  var cur = state.cardGallery[productId] || 0;
+  cur = (cur + delta + imgs.length) % imgs.length;
+  state.cardGallery[productId] = cur;
+  // Effizient: nur Slide-Bilder und Dots umschalten, nicht die ganze Karte neu rendern
+  var card = document.getElementById('card-' + productId);
+  if (!card) return;
+  var slides = card.querySelectorAll('.card-gal-img');
+  for (var s = 0; s < slides.length; s++) slides[s].classList.toggle('active', s === cur);
+  var dots = card.querySelectorAll('.card-gal-dot');
+  for (var d = 0; d < dots.length; d++) dots[d].classList.toggle('active', d === cur);
+}
+
 function renderCard(p) {
   var inCart = false;
   for (var i = 0; i < state.cart.length; i++) if (state.cart[i].id === p.id) { inCart = true; break; }
 
   var slug = makeSlug(p.name);
+  // Galerie-Quelle: erst neues imgs-Array, dann altes img-Feld
+  var gallery = productImages(p);
+  // Aktueller Index (im State gepuffert)
+  if (state.cardGallery[p.id] === undefined) state.cardGallery[p.id] = 0;
+  if (state.cardGallery[p.id] >= gallery.length) state.cardGallery[p.id] = 0;
+  var curIdx = state.cardGallery[p.id];
+
   var imgHTML;
-  if (p.img) {
-    imgHTML = '<img src="' + p.img + '" alt="' + p.name + '">';
+  if (gallery.length) {
+    var slidesHTML = '';
+    for (var gi = 0; gi < gallery.length; gi++) {
+      slidesHTML += '<img class="card-gal-img' + (gi === curIdx ? ' active' : '') + '" data-idx="' + gi + '" src="' + gallery[gi] + '" alt="' + p.name + '">';
+    }
+    var arrowsHTML = '';
+    var dotsHTML = '';
+    if (gallery.length > 1) {
+      arrowsHTML = '<button class="card-gal-arrow prev" onclick="event.stopPropagation();cardGal(' + p.id + ',-1)" aria-label="Vorheriges Bild">‹</button>' +
+                   '<button class="card-gal-arrow next" onclick="event.stopPropagation();cardGal(' + p.id + ',1)" aria-label="Naechstes Bild">›</button>';
+      dotsHTML = '<div class="card-gal-dots">';
+      for (var gd = 0; gd < gallery.length; gd++) {
+        dotsHTML += '<span class="card-gal-dot' + (gd === curIdx ? ' active' : '') + '"></span>';
+      }
+      dotsHTML += '</div>';
+    }
+    imgHTML = '<div class="card-gal">' + slidesHTML + arrowsHTML + dotsHTML + '</div>';
   } else {
     imgHTML = '<div class="img-ph"><div class="img-ph-icon">[Bild]</div><div class="img-ph-name">Empfohlener Dateiname:<br><span class="img-ph-filename">bilder/' + slug + '.jpg</span></div></div>';
   }
@@ -1511,8 +1668,10 @@ function toggleCartProduct(id) {
       }
       return;
     }
+    var imgsList = productImages(prod);
     state.cart.push({
-      id: prod.id, name: prod.name, category: prod.category, img: prod.img,
+      id: prod.id, name: prod.name, category: prod.category,
+      img: imgsList[0] || prod.img || null,
       sizes: prod.sizes, colors: prod.colors,
       selectedSize:  sel.size  || (prod.sizes.length  === 1 ? prod.sizes[0]  : null),
       selectedColor: sel.color || (prod.colors.length === 1 ? prod.colors[0] : null)
@@ -1632,6 +1791,10 @@ function sendToWhatsApp() {
     msg += (j + 1) + '. ' + item.name + ' (' + item.category + ')\n';
     if (item.selectedSize)  msg += '   Größe: ' + item.selectedSize + '\n';
     if (item.selectedColor) msg += '   Farbe: '   + item.selectedColor + '\n';
+    // Erstes Bild des Artikels mitsenden, aber nur wenn echte URL (kein Base64-DataURI)
+    if (item.img && /^https?:\/\//.test(item.img)) {
+      msg += '   Bild: ' + item.img + '\n';
+    }
     msg += '\n';
   }
   if (note) msg += 'Nachricht: ' + note + '\n';
@@ -1694,8 +1857,7 @@ function openAddProduct() {
   document.getElementById('product-modal-title').textContent = 'Artikel hinzufügen';
   document.getElementById('pm-name').value = '';
   document.getElementById('pm-desc').value = '';
-  document.getElementById('pm-img').value = '';
-  setProductImgPreview(null);
+  renderEditImgs();
   populateCatSelect();
   renderTagInputs();
   document.getElementById('product-modal').classList.add('open');
@@ -1708,27 +1870,24 @@ function openEditProduct(id) {
   state.editingId = id;
   state.editSizes  = p.sizes.slice();
   state.editColors = p.colors.slice();
+  state.editImgs   = productImages(p);
   document.getElementById('product-modal-title').textContent = 'Artikel bearbeiten';
   document.getElementById('pm-name').value = p.name;
   document.getElementById('pm-desc').value = p.desc;
-  document.getElementById('pm-img').value  = p.img || '';
-  setProductImgPreview(p.img || null);
+  renderEditImgs();
   populateCatSelect(p.category);
   renderTagInputs();
   document.getElementById('product-modal').classList.add('open');
 }
 
-// ═══════════ BILD-UPLOAD (Drag & Drop / Klick / Paste) ═══════════
-function setProductImgPreview(src) {
-  var empty   = document.getElementById('pm-img-empty');
-  var preview = document.getElementById('pm-img-preview');
-  var img     = document.getElementById('pm-img-preview-img');
-  if (src) {
-    img.src = src;
-    empty.style.display = 'none';
-    preview.style.display = 'flex';
-  } else {
-    img.src = '';
+// ═══════════ BILD-UPLOAD (Mehrere Bilder, Drag&Drop, Klick, Paste) ═══════════
+function renderEditImgs() {
+  var empty = document.getElementById('pm-img-empty');
+  var multi = document.getElementById('pm-img-multi');
+  var list  = document.getElementById('pm-img-list');
+  var hidden= document.getElementById('pm-img');
+
+  if (!state.editImgs.length) {
     empty.style.display = 'flex';
     preview.style.display = 'none';
   }
@@ -1746,27 +1905,81 @@ function handleImgFile(file) {
     alert('Bitte eine Bilddatei auswählen (JPG, PNG, WEBP).');
     return;
   }
-  // Warnung bei sehr grossen Dateien (>4 MB) — Base64 macht ca. +33%
+  empty.style.display = 'none';
+  multi.style.display = 'flex';
+
+  var html = '';
+  for (var i = 0; i < state.editImgs.length; i++) {
+    var isMain = (i === 0);
+    html += '<div class="img-thumb' + (isMain ? ' is-main' : '') + '">' +
+              '<img src="' + state.editImgs[i] + '" alt="">' +
+              (isMain ? '<div class="img-thumb-main-badge">Haupt</div>' : '') +
+              '<div class="img-thumb-actions">' +
+                '<button type="button" class="img-thumb-btn del" title="Bild entfernen" onclick="removeEditImg(' + i + ')">×</button>' +
+              '</div>' +
+              (state.editImgs.length > 1 ?
+                '<div class="img-thumb-arrows">' +
+                  (i > 0 ? '<button type="button" class="img-thumb-btn" title="Nach links" onclick="moveEditImg(' + i + ',-1)">‹</button>' : '<span></span>') +
+                  (i < state.editImgs.length - 1 ? '<button type="button" class="img-thumb-btn" title="Nach rechts" onclick="moveEditImg(' + i + ',1)">›</button>' : '<span></span>') +
+                '</div>' : '') +
+            '</div>';
+  }
+  list.innerHTML = html;
+  // Hidden input enthaelt das erste Bild — fuer evtl. legacy-Code
+  hidden.value = state.editImgs[0] || '';
+}
+
+function removeEditImg(idx) {
+  if (idx < 0 || idx >= state.editImgs.length) return;
+  state.editImgs.splice(idx, 1);
+  renderEditImgs();
+}
+
+function moveEditImg(idx, delta) {
+  var newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= state.editImgs.length) return;
+  var item = state.editImgs[idx];
+  state.editImgs[idx] = state.editImgs[newIdx];
+  state.editImgs[newIdx] = item;
+  renderEditImgs();
+}
+
+// Liest *eine* Datei und liefert das DataURL via Callback
+function readImgFile(file, cb) {
+  if (!file) return cb(null);
+  if (!file.type || file.type.indexOf('image/') !== 0) {
+    alert('Bitte nur Bilddateien (JPG, PNG, WEBP).');
+    return cb(null);
+  }
   if (file.size > 4 * 1024 * 1024) {
     if (!confirm('Die Datei ist größer als 4 MB. Das kann den Katalog langsam machen. Trotzdem hinzufügen?')) return;
   }
   var reader = new FileReader();
-  reader.onload = function(e) {
-    var dataUrl = e.target.result;
-    document.getElementById('pm-img').value = dataUrl;
-    setProductImgPreview(dataUrl);
-  };
-  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); };
+  reader.onload = function(e) { cb(e.target.result); };
+  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); cb(null); };
   reader.readAsDataURL(file);
+}
+
+// Verarbeitet eine FileList (mehrere Files auf einmal)
+function handleImgFiles(files) {
+  if (!files || !files.length) return;
+  var arr = Array.prototype.slice.call(files);
+  var i = 0;
+  function next() {
+    if (i >= arr.length) { renderEditImgs(); return; }
+    readImgFile(arr[i++], function(dataUrl) {
+      if (dataUrl) state.editImgs.push(dataUrl);
+      next();
+    });
+  }
+  next();
 }
 
 function handleImgDrop(event) {
   event.preventDefault();
   event.currentTarget.classList.remove('drag');
   var files = event.dataTransfer && event.dataTransfer.files;
-  if (files && files.length > 0) {
-    handleImgFile(files[0]);
-  }
+  if (files && files.length > 0) handleImgFiles(files);
 }
 
 // Strg+V Paste-Support: für Produkt-Modal und Slide-Modal
@@ -1775,15 +1988,16 @@ document.addEventListener('paste', function(event) {
   if (modal && modal.classList.contains('open')) {
     var items = event.clipboardData && event.clipboardData.items;
     if (!items) return;
+    var pastedFiles = [];
     for (var i = 0; i < items.length; i++) {
       if (items[i].type && items[i].type.indexOf('image/') === 0) {
-        var file = items[i].getAsFile();
-        if (file) {
-          event.preventDefault();
-          handleImgFile(file);
-          return;
-        }
+        var f = items[i].getAsFile();
+        if (f) pastedFiles.push(f);
       }
+    }
+    if (pastedFiles.length) {
+      event.preventDefault();
+      handleImgFiles(pastedFiles);
     }
     return;
   }
@@ -1935,7 +2149,7 @@ function saveProduct() {
   var name = document.getElementById('pm-name').value.trim();
   var cat  = document.getElementById('pm-cat').value;
   var desc = document.getElementById('pm-desc').value.trim();
-  var img  = document.getElementById('pm-img').value.trim();
+  var imgs = state.editImgs.slice();
   if (!name) { alert('Bitte Artikelname eingeben.'); return; }
   if (state.editingId !== null) {
     for (var i = 0; i < state.products.length; i++) {
@@ -1945,7 +2159,8 @@ function saveProduct() {
         state.products[i].desc     = desc;
         state.products[i].sizes    = state.editSizes.slice();
         state.products[i].colors   = state.editColors.slice();
-        state.products[i].img      = img || null;
+        state.products[i].imgs     = imgs;
+        state.products[i].img      = imgs[0] || null; // legacy-Kompatibilitaet
         break;
       }
     }
@@ -1954,7 +2169,8 @@ function saveProduct() {
       id: state.nextId++,
       name: name, category: cat, desc: desc,
       sizes: state.editSizes.slice(), colors: state.editColors.slice(),
-      img: img || null
+      imgs: imgs,
+      img: imgs[0] || null
     });
   }
   save();
@@ -2077,4 +2293,3 @@ init();
 </script>
 </body>
 </html>
-
