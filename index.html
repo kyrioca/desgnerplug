@@ -1266,7 +1266,52 @@ var state = {
   editImgs: []
 };
 
+// ─── R2-Katalog: Laden & Speichern ────────────────────────────────────────
+var _catalogReady    = false;
+var _catalogWaiters  = [];
+
+function _onCatalogReady(fn) {
+  if (_catalogReady) { fn(); return; }
+  _catalogWaiters.push(fn);
+}
+function _signalCatalogReady() {
+  _catalogReady = true;
+  _catalogWaiters.forEach(function(fn) { fn(); });
+  _catalogWaiters = [];
+}
+
+function _applyR2Data(data) {
+  if (!data || !data.products) return;
+  if (data.passwordCustomer) state.passwordCustomer = data.passwordCustomer;
+  if (data.passwordAdmin)    state.passwordAdmin    = data.passwordAdmin;
+  if (data.whatsappNumber)   state.whatsappNumber   = data.whatsappNumber;
+  if (data.categories)       state.categories       = data.categories;
+  if (data.products)         state.products         = data.products;
+  if (data.nextId)           state.nextId           = data.nextId;
+  if (data.categoryImages)   state.categoryImages   = data.categoryImages;
+}
+
+// Katalog nach R2 hochladen (fire-and-forget, nur Admin)
+function saveToR2() {
+  var catalog = {
+    passwordCustomer: state.passwordCustomer,
+    passwordAdmin:    state.passwordAdmin,
+    whatsappNumber:   state.whatsappNumber,
+    categories:       state.categories,
+    products:         state.products,
+    nextId:           state.nextId,
+    categoryImages:   state.categoryImages
+  };
+  fetch(R2_WORKER + '/catalog', {
+    method: 'POST',
+    headers: { 'X-Admin-Key': R2_UPLOAD_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify(catalog)
+  }).catch(function(e) { console.warn('R2 Katalog-Speichern fehlgeschlagen:', e); });
+}
+// ──────────────────────────────────────────────────────────────────────────
+
 function init() {
+  // 1. localStorage sofort laden (Warenkorb + Auswahl bleiben lokal)
   var saved = localStorage.getItem('plugroadState');
   if (saved) {
     try {
@@ -1282,9 +1327,16 @@ function init() {
       if (p.categoryImages)   state.categoryImages   = p.categoryImages;
     } catch(e) {}
   }
+  // 2. Immer aktuellen Katalog von R2 laden (überschreibt localStorage)
+  fetch(R2_WORKER + '/catalog', { cache: 'no-store' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) { _applyR2Data(data); })
+    .catch(function() { /* Netzwerkfehler: localStorage-Stand bleibt */ })
+    .then(function() { _signalCatalogReady(); }); // immer signalisieren
 }
 
 function save() {
+  // Warenkorb + Auswahl bleiben in localStorage (gerätespezifisch)
   localStorage.setItem('plugroadState', JSON.stringify({
     passwordCustomer: state.passwordCustomer,
     passwordAdmin:    state.passwordAdmin,
@@ -1301,18 +1353,25 @@ function save() {
 function doLogin() {
   var v   = document.getElementById('pw-input').value;
   var err = document.getElementById('login-error');
-  if (v === state.passwordAdmin) {
-    state.isAdmin = true;
-    state.isLoggedIn = true;
-    showApp();
-  } else if (v === state.passwordCustomer) {
-    state.isAdmin = false;
-    state.isLoggedIn = true;
-    showApp();
-  } else {
-    err.textContent = 'Falsches Passwort.';
-    document.getElementById('pw-input').value = '';
-  }
+  err.textContent = '';
+  var btn = document.querySelector('.login-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Laden…'; }
+
+  _onCatalogReady(function() {
+    if (btn) { btn.disabled = false; btn.textContent = 'Eintreten'; }
+    if (v === state.passwordAdmin) {
+      state.isAdmin    = true;
+      state.isLoggedIn = true;
+      showApp();
+    } else if (v === state.passwordCustomer) {
+      state.isAdmin    = false;
+      state.isLoggedIn = true;
+      showApp();
+    } else {
+      err.textContent = 'Falsches Passwort.';
+      document.getElementById('pw-input').value = '';
+    }
+  });
 }
 
 function doLogout() {
@@ -2088,7 +2147,7 @@ function saveSlideImg() {
   } else {
     delete state.categoryImages[cat];
   }
-  save();
+  save(); saveToR2();
   closeModal('slide-img-modal');
   renderCatSlideshow();
 }
@@ -2097,7 +2156,7 @@ function removeSlideImg(cat) {
   if (!confirm('Vorschaubild für "' + cat + '" entfernen?')) return;
   if (state.categoryImages && state.categoryImages[cat]) {
     delete state.categoryImages[cat];
-    save();
+    save(); saveToR2();
     renderCatSlideshow();
   }
 }
@@ -2173,7 +2232,7 @@ function saveProduct() {
       img: imgs[0] || null
     });
   }
-  save();
+  save(); saveToR2();
   closeModal('product-modal');
   renderNav();
   renderCatTabs();
@@ -2192,7 +2251,7 @@ function deleteProduct(id) {
     if (state.cart[j].id !== id) newCart.push(state.cart[j]);
   }
   state.cart = newCart;
-  save();
+  save(); saveToR2();
   renderProducts();
   updateCartBadge();
 }
@@ -2219,7 +2278,7 @@ function addCategory() {
   if (!val) return;
   if (state.categories.indexOf(val) === -1) {
     state.categories.push(val);
-    save();
+    save(); saveToR2();
     renderCatManageList();
     renderNav();
     renderCatTabs();
@@ -2238,7 +2297,7 @@ function deleteCat(idx) {
   if (hasProds && !confirm('Kategorie "' + cat + '" löschen?')) return;
   state.categories.splice(idx, 1);
   if (state.activeCategory === cat) state.activeCategory = 'Alle';
-  save();
+  save(); saveToR2();
   renderCatManageList();
   renderNav();
   renderCatTabs();
@@ -2257,7 +2316,7 @@ function savePw() {
   var a = document.getElementById('new-pw-admin').value;
   if (c) state.passwordCustomer = c;
   if (a) state.passwordAdmin = a;
-  save();
+  save(); saveToR2();
   alert('Passwörter gespeichert!');
   document.getElementById('pw-modal').classList.remove('open');
 }
@@ -2270,7 +2329,7 @@ function openSettings() {
 function saveSettings() {
   var v = document.getElementById('set-wa-num').value.trim();
   if (v) state.whatsappNumber = v;
-  save();
+  save(); saveToR2();
   alert('Gespeichert!');
   document.getElementById('settings-modal').classList.remove('open');
 }
