@@ -1233,6 +1233,10 @@ footer{background:var(--bg-0);border-top:1px solid var(--line);padding:2.5rem 1r
    Bleibt img: null, wird ein Platzhalter mit Dateinamen-Vorschlag angezeigt.
    =================================================================== */
 
+// R2 Upload-Endpunkt
+var R2_WORKER = 'https://desgnerplug-upload.desgnerplug.workers.dev';
+var R2_UPLOAD_KEY = 'a0bd15e4-de23-4bdb-88cd-90df600b45bb';
+
 var state = {
   passwordCustomer: 'kunde123',
   passwordAdmin:    'admin999',
@@ -1931,31 +1935,46 @@ function moveEditImg(idx, delta) {
   renderEditImgs();
 }
 
-// Liest *eine* Datei und liefert das DataURL via Callback
-function readImgFile(file, cb) {
+// Lädt eine Datei zu R2 hoch und gibt die öffentliche URL zurück
+function uploadToR2(file, cb) {
   if (!file) return cb(null);
   if (!file.type || file.type.indexOf('image/') !== 0) {
     alert('Bitte nur Bilddateien (JPG, PNG, WEBP).');
     return cb(null);
   }
-  if (file.size > 4 * 1024 * 1024) {
-    if (!confirm('Die Datei ist größer als 4 MB. Das kann den Katalog langsam machen. Trotzdem hinzufügen?')) return;
-  }
-  var reader = new FileReader();
-  reader.onload = function(e) { cb(e.target.result); };
-  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); cb(null); };
-  reader.readAsDataURL(file);
+  var fd = new FormData();
+  fd.append('file', file);
+  showToast('⬆ Bild wird hochgeladen…');
+  fetch(R2_WORKER, {
+    method: 'POST',
+    headers: { 'X-Admin-Key': R2_UPLOAD_KEY },
+    body: fd
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d && d.url) {
+      showToast('✅ Bild hochgeladen!');
+      cb(d.url);
+    } else {
+      alert('Upload fehlgeschlagen: ' + (d && d.error ? d.error : 'Unbekannter Fehler'));
+      cb(null);
+    }
+  })
+  .catch(function(e) {
+    alert('Upload-Fehler: ' + e.message);
+    cb(null);
+  });
 }
 
-// Verarbeitet eine FileList (mehrere Files auf einmal)
+// Verarbeitet eine FileList (mehrere Files, lädt jedes zu R2)
 function handleImgFiles(files) {
   if (!files || !files.length) return;
   var arr = Array.prototype.slice.call(files);
   var i = 0;
   function next() {
     if (i >= arr.length) { renderEditImgs(); return; }
-    readImgFile(arr[i++], function(dataUrl) {
-      if (dataUrl) state.editImgs.push(dataUrl);
+    uploadToR2(arr[i++], function(url) {
+      if (url) state.editImgs.push(url);
       next();
     });
   }
@@ -2043,17 +2062,11 @@ function handleSlideImgFile(file) {
     alert('Bitte eine Bilddatei auswählen (JPG, PNG, WEBP).');
     return;
   }
-  if (file.size > 4 * 1024 * 1024) {
-    if (!confirm('Die Datei ist größer als 4 MB. Das kann den Katalog langsam machen. Trotzdem hinzufügen?')) return;
-  }
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var dataUrl = e.target.result;
-    document.getElementById('sm-img-data').value = dataUrl;
-    setSlideImgPreview(dataUrl);
-  };
-  reader.onerror = function() { alert('Datei konnte nicht gelesen werden.'); };
-  reader.readAsDataURL(file);
+  uploadToR2(file, function(url) {
+    if (!url) return;
+    document.getElementById('sm-img-data').value = url;
+    setSlideImgPreview(url);
+  });
 }
 
 function handleSlideImgDrop(event) {
